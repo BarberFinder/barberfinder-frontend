@@ -1,0 +1,18 @@
+$color: $color-placeholder;
+@mixin placeholder ($subscription) {
+	@if $subscription == 'true' {
+		$color: $color-subscriber-placeholder;
+	}
+	&::-webkit-input-placeholder {
+		color: $color !important;
+	}
+	&:-moz-placeholder {
+		color: $color !important;
+	}
+	&::-moz-placeholder {
+		color: $color !important;
+	}
+	&:-ms-input-placeholder {
+		color: $color !important;
+	}
+}

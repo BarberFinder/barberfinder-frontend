@@ -1,0 +1,42 @@
+.team_section {
+	.team_members {
+		.col-xs-6 {
+			padding: 15px;
+		}
+		.team_member {
+			position: relative;
+			overflow: hidden;
+			img {
+				width: 100%;
+			}
+			.overlay {
+				background-color: rgba(158, 138, 120, 0.8);
+				display: block;
+				color: #fff;
+				text-align: center;
+				padding: 20px 0;
+				position: absolute;
+				left: 0;
+				bottom: -100px;
+				width: 100%;
+				h3 {
+					color: #fff;
+					font-weight: 600;
+					margin: 0 0 -3px;
+				}
+				p {
+					margin: 0 0 5px;
+				}
+			}
+			&:hover {
+				.overlay {
+					bottom: 0;
+				}
+				img {
+					-webkit-filter: grayscale(1);
+					filter: grayscale(1);
+				}
+			}
+		}
+	}
+}
