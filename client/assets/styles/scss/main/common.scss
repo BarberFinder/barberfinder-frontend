@@ -423,3 +423,18 @@ button {
 	max-width: 100%;
 	height: auto;
 }
+
+.stop-scrolling {
+	overflow: hidden;
+}
+
+.anchor {
+	color: #9e8a78;
+}
+
+.fixed-bottom {
+	position: fixed;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+}

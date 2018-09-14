@@ -30,7 +30,6 @@ gulp.task('build:js', [ 'clean' ], () => {
 	gulp
 		.src([
 			'./assets/js/vendor/jquery-1.12.4.min.js',
-			'./assets/js/vendor/imagesloaded.pkgd.min.js',
 			'./assets/js/vendor/smooth-scroll.min.js',
 			'./assets/js/main.js'
 		])

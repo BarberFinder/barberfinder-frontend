@@ -15,7 +15,7 @@ class Homepage extends Component {
 	render() {
 		return (
 			<Fragment>
-				<Header />
+				<Header home={true} />
 				<Carousel />
 				<Services />
 				<WhyUs />
