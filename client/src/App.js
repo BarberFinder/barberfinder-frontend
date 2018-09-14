@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import Homepage from './pages/Homepage';
-import SignupPage from './pages/SignupPage';
-import LoginPage from './pages/LoginPage';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './App.css';
+import LoginPage from './pages/LoginPage';
+import SignupPage from './pages/SignupPage';
 
 class App extends Component {
 	render() {
