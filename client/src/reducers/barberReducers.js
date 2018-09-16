@@ -1,4 +1,5 @@
 import days from '../helper/days';
+import type from '../actions/types';
 
 let operation_hours = [];
 days.map((day) => {
@@ -19,11 +20,23 @@ const initialState = {
 	tagline: '',
 	phone: '',
 	address: '',
-	operation_hours: operation_hours
+	city: '',
+	operation_hours: operation_hours,
+	barbershop: {}
 };
 
 const barber = (state = initialState, action) => {
 	switch (action.type) {
+		case type.CREATE_BARBER:
+			return {
+				...state,
+				barbershop: action.payload.barber
+			};
+		case type.GET_BARBER:
+			return {
+				...state,
+				barbershop: action.payload.data
+			};
 		default:
 			return state;
 	}

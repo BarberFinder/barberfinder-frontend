@@ -9,8 +9,8 @@ import { verifyToken } from './actions/authActions';
 import { connect } from 'react-redux';
 
 class App extends Component {
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 		this.state = {
 			isAuthenticated: this.props.isAuthenticated
 		};

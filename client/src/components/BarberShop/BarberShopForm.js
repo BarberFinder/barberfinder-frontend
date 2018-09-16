@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Button } from 'semantic-ui-react';
 import { TimeInput } from 'semantic-ui-calendar-react';
 import { withRouter } from 'react-router-dom';
+import { createBarber } from '../../actions/barberActions';
 import { connect } from 'react-redux';
 import BarberService from './BarberService';
 
@@ -11,6 +12,7 @@ class BarberShopForm extends Component {
 		this.state = {
 			services: this.props.services,
 			name: this.props.name,
+			city: this.props.city,
 			tagline: this.props.tagline,
 			phone: this.props.phone,
 			address: this.props.address,
@@ -59,7 +61,7 @@ class BarberShopForm extends Component {
 
 	handleSubmit = (e) => {
 		e.preventDefault();
-		console.log(this.state);
+		this.props.createBarber(this.state);
 	};
 
 	handleAddService = (e) => {
@@ -131,6 +133,18 @@ class BarberShopForm extends Component {
 							/>
 						</div>
 					</div>
+					<div className="form-group row">
+						<div className="col-xs-12">
+							<input
+								onChange={this.handleInput}
+								type="text"
+								name="city"
+								className="form-control"
+								placeholder="City"
+								required
+							/>
+						</div>
+					</div>
 					<h2>Services</h2>
 					{this.state.services.map((service, index) => (
 						<BarberService
@@ -191,8 +205,9 @@ const mapStateToProps = (state) => {
 		tagline: state.barber.tagline,
 		phone: state.barber.phone,
 		address: state.barber.address,
+		city: state.barber.city,
 		operation_hours: state.barber.operation_hours
 	};
 };
 
-export default withRouter(connect(mapStateToProps)(BarberShopForm));
+export default withRouter(connect(mapStateToProps, { createBarber })(BarberShopForm));
