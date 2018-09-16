@@ -1,37 +1,69 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Menu, Button, Header, Container } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import logoImage from '../../assets/logo.png';
+import ProfileAvatar from '../Common/ProfileAvatar';
+import { connect } from 'react-redux';
+import { verifyToken } from '../../actions/authActions';
 
-const HeaderPage = (props) => {
-	return (
-		<Menu id="header" fixed="top" inverted className="header-navbar">
-			<Container>
-				<Menu.Menu className={props.home ? '' : 'hide'} position="left">
-					<Menu.Item className="item-before">
+class HeaderPage extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			isAuthenticated: this.props.isAuthenticated
+		};
+	}
+
+	componentDidMount = async () => {
+		await this.props.verifyToken(localStorage.token).then((response) => {
+			this.setState({
+				isAuthenticated: response.isAuthenticated
+			});
+		});
+	};
+
+	render() {
+		return (
+			<Menu id="header" fixed="top" inverted className="header-navbar">
+				<Container>
+					<Menu.Menu className={!this.props.center ? '' : 'hide'} position="left">
+						<Menu.Item className="item-before">
+							<Link to="/">
+								<img src={logoImage} className="img-responsive" alt="BarberFinder" />
+							</Link>
+						</Menu.Item>
+					</Menu.Menu>
+					<Menu.Menu className={!this.props.center ? '' : 'hide'} position="right">
+						<Menu.Item className="item-before">
+							{!this.state.isAuthenticated ? (
+								<React.Fragment>
+									<Link className="item-before btn-login" to="/login">
+										<Button inverted>Login</Button>
+									</Link>
+									<Link className="item-before " to="/signup">
+										<Button inverted>Sign Up</Button>
+									</Link>
+								</React.Fragment>
+							) : (
+								<ProfileAvatar />
+							)}
+						</Menu.Item>
+					</Menu.Menu>
+					<Header className={!this.props.center ? 'hide' : 'header-login-signup'} textAlign="center">
 						<Link to="/">
 							<img src={logoImage} className="img-responsive" alt="BarberFinder" />
 						</Link>
-					</Menu.Item>
-				</Menu.Menu>
-				<Menu.Menu className={props.home ? '' : 'hide'} position="right">
-					<Menu.Item className="item-before">
-						<Link className="item-before btn-login" to="/login">
-							<Button inverted>Login</Button>
-						</Link>
-						<Link className="item-before " to="/signup">
-							<Button inverted>Sign Up</Button>
-						</Link>
-					</Menu.Item>
-				</Menu.Menu>
-				<Header className={props.home ? 'hide' : 'header-login-signup'} textAlign="center">
-					<Link to="/">
-						<img src={logoImage} className="img-responsive" alt="BarberFinder" />
-					</Link>
-				</Header>
-			</Container>
-		</Menu>
-	);
+					</Header>
+				</Container>
+			</Menu>
+		);
+	}
+}
+
+const mapStateToProps = (state) => {
+	return {
+		isAuthenticated: state.auth.isAuthenticated
+	};
 };
 
-export default HeaderPage;
+export default connect(mapStateToProps, { verifyToken })(HeaderPage);

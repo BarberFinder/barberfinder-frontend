@@ -12,10 +12,14 @@ class Homepage extends Component {
 		super(props);
 		this.state = {};
 	}
+
+	componentDidMount() {
+		window.scrollTo(0, 0);
+	}
 	render() {
 		return (
 			<Fragment>
-				<Header home={true} />
+				<Header />
 				<Carousel />
 				<Services />
 				<WhyUs />

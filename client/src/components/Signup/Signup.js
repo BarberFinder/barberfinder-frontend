@@ -7,6 +7,7 @@ class Signup extends Component {
 		super(props);
 		this.state = {};
 	}
+
 	render() {
 		return (
 			<div className="form-wrapper">

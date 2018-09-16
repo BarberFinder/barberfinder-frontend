@@ -16,7 +16,7 @@ class LoginPage extends Component {
 	render() {
 		return (
 			<React.Fragment>
-				<Header />
+				<Header center={true} />
 				<Login />
 				<Footer fixedBottom={true} />
 			</React.Fragment>

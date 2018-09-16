@@ -16,7 +16,7 @@ class SignupPage extends Component {
 	render() {
 		return (
 			<React.Fragment>
-				<Header />
+				<Header center={true} />
 				<Signup />
 				<Footer />
 			</React.Fragment>
