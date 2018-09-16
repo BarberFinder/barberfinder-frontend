@@ -5,8 +5,27 @@ import './App.css';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import BarberPage from './pages/BarberPage';
+import { verifyToken } from './actions/authActions';
+import { connect } from 'react-redux';
 
 class App extends Component {
+	constructor() {
+		super();
+		this.state = {
+			isAuthenticated: this.props.isAuthenticated
+		};
+	}
+
+	componentDidMount = async () => {
+		if (localStorage.token) {
+			await this.props.verifyToken(localStorage.token).then((response) => {
+				this.setState({
+					isAuthenticated: response.isAuthenticated
+				});
+			});
+		}
+	};
+
 	render() {
 		return (
 			<Router>
@@ -21,4 +40,10 @@ class App extends Component {
 	}
 }
 
-export default App;
+const mapStateToProps = (state) => {
+	return {
+		isAuthenticated: state.auth.isAuthenticated
+	};
+};
+
+export default connect(mapStateToProps, { verifyToken })(App);

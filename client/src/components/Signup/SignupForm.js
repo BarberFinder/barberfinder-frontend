@@ -16,6 +16,7 @@ class SignupForm extends Component {
 			email: this.props.email,
 			password: this.props.password,
 			phone: this.props.phone,
+			isAuthenticated: this.props.isAuthenticated,
 			birthday: {
 				date: this.props.birthday.date,
 				month: this.props.birthday.month,
@@ -23,16 +24,6 @@ class SignupForm extends Component {
 			}
 		};
 	}
-
-	componentWillReceiveProps(nextProps) {
-		this.props.verifyToken({ token: nextProps.token });
-	}
-
-	renderRedirect = () => {
-		if (this.props.isAuthenticated) {
-			return <Redirect to="/" />;
-		}
-	};
 
 	submitForm = (e) => {
 		e.preventDefault();
@@ -53,7 +44,15 @@ class SignupForm extends Component {
 			birthday: userBirthday,
 			phone: this.state.phone
 		};
-		this.props.signup(user);
+		this.props.signup(user).then((response) => {
+			if (localStorage.token) {
+				this.props.verifyToken(localStorage.token).then((result) => {
+					this.setState({
+						isAuthenticated: result.isAuthenticated
+					});
+				});
+			}
+		});
 	};
 
 	handleBirthday = (e) => {
@@ -68,6 +67,12 @@ class SignupForm extends Component {
 		this.setState({
 			[e.target.name]: e.target.value
 		});
+	};
+
+	renderRedirect = () => {
+		if (this.state.isAuthenticated) {
+			return <Redirect to="/" />;
+		}
 	};
 
 	render() {
@@ -161,7 +166,6 @@ class SignupForm extends Component {
 const mapStateToProps = (state) => {
 	return {
 		isAuthenticated: state.auth.isAuthenticated,
-		token: state.signup.token,
 		first_name: state.signup.first_name,
 		last_name: state.signup.last_name,
 		username: state.signup.username,

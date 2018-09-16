@@ -4,24 +4,8 @@ import { Link } from 'react-router-dom';
 import logoImage from '../../assets/logo.png';
 import ProfileAvatar from '../Common/ProfileAvatar';
 import { connect } from 'react-redux';
-import { verifyToken } from '../../actions/authActions';
 
 class HeaderPage extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			isAuthenticated: this.props.isAuthenticated
-		};
-	}
-
-	componentDidMount = async () => {
-		await this.props.verifyToken(localStorage.token).then((response) => {
-			this.setState({
-				isAuthenticated: response.isAuthenticated
-			});
-		});
-	};
-
 	render() {
 		return (
 			<Menu id="header" fixed="top" inverted className="header-navbar">
@@ -35,7 +19,7 @@ class HeaderPage extends Component {
 					</Menu.Menu>
 					<Menu.Menu className={!this.props.center ? '' : 'hide'} position="right">
 						<Menu.Item className="item-before">
-							{!this.state.isAuthenticated ? (
+							{!this.props.isAuthenticated ? (
 								<React.Fragment>
 									<Link className="item-before btn-login" to="/login">
 										<Button inverted>Login</Button>
@@ -66,4 +50,4 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, { verifyToken })(HeaderPage);
+export default connect(mapStateToProps)(HeaderPage);
