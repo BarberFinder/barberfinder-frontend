@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Button } from 'semantic-ui-react';
 import { TimeInput } from 'semantic-ui-calendar-react';
-import { withRouter } from 'react-router-dom';
 import { createBarber } from '../../actions/barberActions';
 import { connect } from 'react-redux';
 import BarberService from './BarberService';
@@ -210,4 +209,4 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default withRouter(connect(mapStateToProps, { createBarber })(BarberShopForm));
+export default connect(mapStateToProps, { createBarber })(BarberShopForm);

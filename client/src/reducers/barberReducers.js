@@ -22,7 +22,7 @@ const initialState = {
 	address: '',
 	city: '',
 	operation_hours: operation_hours,
-	barbershop: {}
+	barbershop: ''
 };
 
 const barber = (state = initialState, action) => {

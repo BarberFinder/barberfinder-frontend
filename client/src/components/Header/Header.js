@@ -4,8 +4,14 @@ import { Link } from 'react-router-dom';
 import logoImage from '../../assets/logo.png';
 import ProfileAvatar from '../Common/ProfileAvatar';
 import { connect } from 'react-redux';
+import { logout } from '../../actions/authActions';
 
 class HeaderPage extends Component {
+	logout = () => {
+		localStorage.removeItem('token');
+		this.props.logout();
+	};
+
 	render() {
 		return (
 			<Menu id="header" fixed="top" inverted className="header-navbar">
@@ -29,7 +35,7 @@ class HeaderPage extends Component {
 									</Link>
 								</React.Fragment>
 							) : (
-								<ProfileAvatar />
+								<ProfileAvatar onLogout={this.logout} />
 							)}
 						</Menu.Item>
 					</Menu.Menu>
@@ -50,4 +56,4 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps)(HeaderPage);
+export default connect(mapStateToProps, { logout })(HeaderPage);

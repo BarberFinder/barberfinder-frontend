@@ -1,9 +1,9 @@
 import React from 'react';
 import defaultProfile from '../../assets/default-avatar.png';
-import { Dropdown } from 'semantic-ui-react';
+import { Dropdown, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
-const ProfileAvatar = () => {
+const ProfileAvatar = (props) => {
 	const trigger = (
 		<span>
 			<img src={defaultProfile} alt="" className="ui avatar image" />
@@ -26,6 +26,10 @@ const ProfileAvatar = () => {
 					<Link to="/barber">Barbershop</Link>
 				</span>
 			)
+		},
+		{
+			key: 'logout',
+			text: <span onClick={props.onLogout}>Logout</span>
 		}
 	];
 	return <Dropdown trigger={trigger} options={options} pointing="top right" icon={null} />;
