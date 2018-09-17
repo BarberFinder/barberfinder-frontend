@@ -15,6 +15,7 @@ class BarberShopProfile extends Component {
 
 	componentDidMount = async () => {
 		await this.props.getBarber();
+		console.log(this.props.isAuthenticated);
 	};
 
 	render() {

@@ -16,13 +16,9 @@ class App extends Component {
 		};
 	}
 
-	componentDidMount = async () => {
+	componentWillMount = async () => {
 		if (localStorage.token) {
-			await this.props.verifyToken(localStorage.token).then((response) => {
-				this.setState({
-					isAuthenticated: response.isAuthenticated
-				});
-			});
+			await this.props.verifyToken(localStorage.token);
 		}
 	};
 

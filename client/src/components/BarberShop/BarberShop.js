@@ -6,7 +6,6 @@ import { Redirect } from 'react-router-dom';
 class BarberShop extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
 	}
 
 	renderRedirect = () => {
@@ -32,7 +31,8 @@ class BarberShop extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		isAuthenticated: state.auth.isAuthenticated
+		isAuthenticated: state.auth.isAuthenticated,
+		barbershop: state.barber.barbershop
 	};
 };
 
