@@ -18,15 +18,15 @@ const BarberService = (props) => {
 				<div className="col-xs-5">
 					<input
 						type="text"
-						value={props.service.service_price}
-						name="service_price"
+						value={props.service.price}
+						name="price"
 						className="form-control"
 						placeholder="Price"
 						onChange={props.onServicePriceChangeHandler(props.index)}
 					/>
 				</div>
 				<div className="col-xs-2">
-					<a>
+					<a className="delete-service">
 						<Icon onClick={props.onRemoveServiceHandler(props.index)} className="remove" />
 					</a>
 				</div>

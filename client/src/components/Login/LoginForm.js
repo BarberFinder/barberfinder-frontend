@@ -74,7 +74,6 @@ class LoginForm extends Component {
 					) : (
 						''
 					)}
-
 					<button onClick={this.login} id="login-button-form" className="default_btn col-xs-6" type="submit">
 						Login
 					</button>

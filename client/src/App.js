@@ -7,6 +7,7 @@ import SignupPage from './pages/SignupPage';
 import BarberPage from './pages/BarberPage';
 import { verifyToken } from './actions/authActions';
 import { connect } from 'react-redux';
+import Loading from './components/Common/Loading';
 
 class App extends Component {
 	constructor(props) {
@@ -16,7 +17,7 @@ class App extends Component {
 		};
 	}
 
-	componentWillMount = async () => {
+	componentDidMount = async () => {
 		if (localStorage.token) {
 			await this.props.verifyToken(localStorage.token);
 		}

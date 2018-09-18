@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Menu, Button, Header, Container } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import logoImage from '../../assets/logo.png';
 import ProfileAvatar from '../Common/ProfileAvatar';
 import { connect } from 'react-redux';
@@ -35,7 +35,7 @@ class HeaderPage extends Component {
 									</Link>
 								</React.Fragment>
 							) : (
-								<ProfileAvatar onLogout={this.logout} />
+								<ProfileAvatar user={this.props.user} onLogout={this.logout} />
 							)}
 						</Menu.Item>
 					</Menu.Menu>
@@ -52,7 +52,8 @@ class HeaderPage extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		isAuthenticated: state.auth.isAuthenticated
+		isAuthenticated: state.auth.isAuthenticated,
+		user: state.auth.user
 	};
 };
 

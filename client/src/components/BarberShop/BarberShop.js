@@ -8,20 +8,21 @@ class BarberShop extends Component {
 		super(props);
 	}
 
-	renderRedirect = () => {
-		if (!this.props.isAuthenticated) {
-			return <Redirect to="/login" />;
-		}
-	};
+	// renderRedirect = () => {
+	// 	if (!this.props.isAuthenticated) {
+	// 		return <Redirect to="/login" />;
+	// 	} else if (this.props.isAuthenticated && this.props.barbershop) {
+	// 		return <Redirect to="/barber" />;
+	// 	}
+	// };
 
 	render() {
 		return (
 			<div className="form-wrapper">
-				{this.renderRedirect()}
 				<section className="book_section padding">
 					<div className="container book_form">
 						<div className="section_heading mb-20">{/* <h2></h2> */}</div>
-						<BarberShopForm />
+						<BarberShopForm path={this.props.match.path} />
 					</div>
 				</section>
 			</div>

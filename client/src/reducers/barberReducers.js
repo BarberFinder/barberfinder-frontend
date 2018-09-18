@@ -1,5 +1,6 @@
 import days from '../helper/days';
 import type from '../actions/types';
+import defaultImage from '../assets/default-barbershop.jpg';
 
 let operation_hours = [];
 days.map((day) => {
@@ -7,22 +8,24 @@ days.map((day) => {
 		...operation_hours,
 		{
 			day: day.number,
-			open_time: '',
-			close_time: '',
+			open_hour: '',
+			close_hour: '',
 			name: day.name
 		}
 	]);
 });
 
 const initialState = {
-	services: [ { service_name: '', service_price: '' } ],
+	services: [ { service_name: '', price: '' } ],
 	name: '',
 	tagline: '',
 	phone: '',
 	address: '',
 	city: '',
 	operation_hours: operation_hours,
-	barbershop: ''
+	barbershop: '',
+	id: '',
+	image: defaultImage
 };
 
 const barber = (state = initialState, action) => {
@@ -33,6 +36,13 @@ const barber = (state = initialState, action) => {
 				barbershop: action.payload.barber
 			};
 		case type.GET_BARBER:
+			return {
+				...state,
+				barbershop: action.payload.data
+			};
+		case type.GET_BARBER_LIST:
+			return state;
+		case type.GET_BARBER_BY_ID:
 			return {
 				...state,
 				barbershop: action.payload.data

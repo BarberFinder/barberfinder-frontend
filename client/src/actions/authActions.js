@@ -1,10 +1,9 @@
 import type from './types';
 import axios from 'axios';
-import auth from '../config/api/auth';
 
 export const verifyToken = (token) => async (dispatch) => {
 	axios
-		.post(auth.verifyToken, { token: token })
+		.post(`${process.env.REACT_APP_API_URL}/auth/verify-token`, { token: token })
 		.then((res) => {
 			dispatch({
 				type: type.VERIFY_TOKEN,
@@ -16,7 +15,7 @@ export const verifyToken = (token) => async (dispatch) => {
 
 export const login = (user) => (dispatch) => {
 	axios
-		.post(auth.login, { user: user })
+		.post(`${process.env.REACT_APP_API_URL}/auth/login`, { user: user })
 		.then((res) => {
 			dispatch({
 				type: type.LOGIN,
@@ -34,19 +33,14 @@ export const logout = () => (dispatch) => {
 };
 
 export const signup = (user) => (dispatch) => {
-	return new Promise((resolve, reject) => {
-		axios
-			.post(auth.signup, user)
-			.then((res) => {
-				localStorage.setItem('token', res.data.token);
-				dispatch({
-					type: type.SIGNUP,
-					payload: res.data
-				});
-				resolve(res.data);
-			})
-			.catch((err) => {
-				reject(err);
+	axios
+		.post(`${process.env.REACT_APP_API_URL}/auth/signup`, user)
+		.then((res) => {
+			localStorage.setItem('token', res.data.token);
+			dispatch({
+				type: type.SIGNUP,
+				payload: res.data
 			});
-	});
+		})
+		.catch((err) => {});
 };
