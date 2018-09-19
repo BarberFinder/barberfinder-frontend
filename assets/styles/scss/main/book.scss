@@ -1,0 +1,24 @@
+.book_section {
+	background-image: url(../img/book.jpg);
+	background-attachment: fixed;
+	width: 100%;
+	background-position: center center;
+	.book_content {
+		padding: 180px 0;
+		h2 {
+			font-size: 42px;
+			color: #fff;
+		}
+		p {
+			color: #ddd;
+		}
+		@include onMobile {
+			padding: 0px 0 40px;
+		}
+	}
+	.book_form {
+		background-color: #fff;
+		padding: 30px 30px;
+		border-radius: 5px;
+	}
+}

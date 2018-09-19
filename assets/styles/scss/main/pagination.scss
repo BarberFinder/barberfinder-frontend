@@ -1,0 +1,25 @@
+.pagination_wrap {
+	li {
+		display: inline-block;
+		margin: 0 5px;
+		a {
+			border: 1px solid #ddd;
+			display: inline-block;
+			width: 40px;
+			height: 40px;
+			line-height: 38px;
+			text-align: center;
+			color: #777;
+			font-weight: 600;
+			&:hover {
+				opacity: 1;
+				text-decoration: none;
+			}
+			&.active {
+				background-color: #9e8a78;
+				border: 1px solid #9e8a78;
+				color: #fff;
+			}
+		}
+	}
+}

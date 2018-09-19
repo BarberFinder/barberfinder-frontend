@@ -1,0 +1,27 @@
+.barbershop-profile {
+	padding: 40px !important;
+}
+
+.barbershop_profile_image {
+	padding: 10px;
+}
+
+.barbershop_list {
+	margin-top: 50px;
+	.img_profile_list {
+		max-width: 100%;
+		height: auto;
+	}
+}
+
+.modal_appointment {
+	position: relative;
+}
+
+.full_width {
+	.ui {
+		&.input {
+			width: 100%;
+		}
+	}
+}

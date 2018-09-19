@@ -1,0 +1,77 @@
+@mixin removeOutline {
+	outline: none;
+	box-shadow: none;
+	border: 1px solid #bbb;
+}
+
+@mixin removeOutlineCFFormControl {
+	border-bottom: 1px solid #999;
+	box-shadow: none;
+}
+
+.form-control {
+	height: 45px;
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	&:focus {
+		@include removeOutline;
+	}
+	&:hover {
+		@include removeOutline;
+	}
+	box-shadow: none;
+}
+.comment_form {
+	border: 1px solid #ddd;
+	padding: 20px 20px;
+}
+
+.cf-wrapper {
+	.form-control {
+		background: none;
+		border: none;
+		-moz-border-radius: 0;
+		-webkit-border-radius: 0;
+		-o-border-radius: 0;
+		border-radius: 0;
+		box-shadow: none;
+		border-bottom: 1px solid #ddd;
+		color: #282828;
+		padding: 10px;
+		&:hover {
+			@include removeOutlineCFFormControl;
+		}
+		&:focus {
+			@include removeOutlineCFFormControl;
+		}
+	}
+	input {
+		@include placeholder('false');
+	}
+	textarea {
+		@include placeholder('false');
+	}
+}
+.form-box {
+	.form-control {
+		border: 1px solid #ddd;
+	}
+}
+
+#form-messages {
+	display: none;
+	&.alert-danger,
+	&.alert-success {
+		display: block;
+	}
+}
+
+.reserv_form {
+	.form-group {
+		.col-xs-6 {
+			&:first-child {
+				margin-bottom: 15px;
+			}
+		}
+	}
+}
