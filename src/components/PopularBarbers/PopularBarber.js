@@ -9,9 +9,6 @@ const PopularBarber = (props) => {
 				<img src={imageUrl} alt={name} />
 				<div className="post_info">
 					<h3>{name}</h3>
-					<p>
-						Lorem Ipsum is simply dummy<br /> and typesetting industry.
-					</p>
 				</div>
 			</div>
 		</div>
