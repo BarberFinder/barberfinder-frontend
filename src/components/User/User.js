@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Sidebar from './Sidebar';
-import { connect } from 'react-router-dom';
 
 class User extends Component {
 	constructor(props) {
@@ -18,10 +17,4 @@ class User extends Component {
 	}
 }
 
-const mapStateToProps = (state) => {
-	return {
-		user: state.user.user
-	};
-};
-
-export default connect(mapStateToProps, {})(User);
+export default User;

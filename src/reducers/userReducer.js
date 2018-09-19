@@ -1,7 +1,8 @@
 import type from '../actions/types';
 
 const initialState = {
-	user: ''
+	user: '',
+	isLoading: true
 };
 
 const user = (state = initialState, action) => {
@@ -9,7 +10,8 @@ const user = (state = initialState, action) => {
 		case type.GET_USER:
 			return {
 				...state,
-				user: action.payload.data
+				user: action.payload.data,
+				isLoading: false
 			};
 		default:
 			return state;
