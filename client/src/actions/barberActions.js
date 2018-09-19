@@ -27,18 +27,36 @@ export const createBarber = (postData) => (dispatch) => {
 		token = localStorage.token;
 	}
 	axios
-		.post(
-			`${process.env.REACT_APP_API_URL}/barber/create`,
-			{ data: postData },
-			{
-				headers: {
-					Authorization: `Bearer ${token}`
-				}
+		.post(`${process.env.REACT_APP_API_URL}/barber/create`, postData, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+				'Content-Type': 'multipart/form-data'
 			}
-		)
+		})
 		.then((res) => {
 			dispatch({
 				type: type.CREATE_BARBER,
+				payload: res.data
+			});
+		})
+		.catch((err) => {});
+};
+
+export const editBarber = (postData, barberId) => (dispatch) => {
+	let token = '';
+	if (localStorage.token) {
+		token = localStorage.token;
+	}
+	axios
+		.put(`${process.env.REACT_APP_API_URL}/barber/edit/${barberId}`, postData, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+				'Content-Type': 'multipart/form-data'
+			}
+		})
+		.then((res) => {
+			dispatch({
+				type: type.EDIT_BARBER,
 				payload: res.data
 			});
 		})

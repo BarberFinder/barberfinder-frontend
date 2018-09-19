@@ -25,7 +25,8 @@ const initialState = {
 	operation_hours: operation_hours,
 	barbershop: '',
 	id: '',
-	image: defaultImage
+	image: defaultImage,
+	barbershopList: []
 };
 
 const barber = (state = initialState, action) => {
@@ -41,7 +42,10 @@ const barber = (state = initialState, action) => {
 				barbershop: action.payload.data
 			};
 		case type.GET_BARBER_LIST:
-			return state;
+			return {
+				...state,
+				barbershopList: action.payload.data
+			};
 		case type.GET_BARBER_BY_ID:
 			return {
 				...state,

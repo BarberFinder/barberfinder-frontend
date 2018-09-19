@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Button, Form } from 'semantic-ui-react';
+import { Button } from 'semantic-ui-react';
 import { TimeInput } from 'semantic-ui-calendar-react';
-import { createBarber } from '../../actions/barberActions';
+import { createBarber, editBarber } from '../../actions/barberActions';
 import { connect } from 'react-redux';
 import BarberService from './BarberService';
 import axios from 'axios';
@@ -23,69 +23,6 @@ class BarberShopForm extends Component {
 			id: this.props.id
 		};
 	}
-
-	handleInput = (e) => {
-		this.setState({
-			[e.target.name]: e.target.value
-		});
-	};
-
-	handleServicerNameChange = (index) => (e) => {
-		const newServices = this.state.services.map((service, sindex) => {
-			if (index !== sindex) return service;
-			return { ...service, service_name: e.target.value };
-		});
-
-		this.setState({ services: newServices });
-	};
-
-	handleServicePriceChange = (index) => (e) => {
-		const newServices = this.state.services.map((service, sindex) => {
-			if (index !== sindex) return service;
-			return { ...service, service_price: e.target.value };
-		});
-
-		this.setState({ services: newServices });
-	};
-
-	handleTimeInput = (e, { name, value }) => {
-		let newOperationHours = [];
-		const day = name.substring(0, 1);
-		const time = name.substring(2);
-		this.state.operation_hours.map((operation_hour) => {
-			if (operation_hour['day'].toString() === day) {
-				operation_hour[time] = value;
-			}
-			return (newOperationHours = [ ...newOperationHours, operation_hour ]);
-		});
-		this.setState({
-			operation_hours: newOperationHours
-		});
-	};
-
-	handleSubmit = (e) => {
-		e.preventDefault();
-		if (this.props.path === '/barber/edit') {
-			console.log('halo');
-		} else {
-			this.props.createBarber(this.state);
-		}
-	};
-
-	handleAddService = (e) => {
-		e.preventDefault();
-		this.setState({ services: this.state.services.concat([ { service_name: '', service_price: '' } ]) });
-	};
-
-	handleRemoveService = (idx) => () => {
-		this.setState({ services: this.state.services.filter((s, sidx) => idx !== sidx) });
-	};
-
-	handleInput = (e) => {
-		this.setState({
-			[e.target.name]: e.target.value
-		});
-	};
 
 	componentDidMount = async () => {
 		const path = this.props.path;
@@ -110,7 +47,7 @@ class BarberShopForm extends Component {
 					});
 					this.setState({
 						name: barbershop.name,
-						address: barbershop.address,
+						address: barbershop.address === null ? this.props.address : barbershop.address,
 						tagline: barbershop.tagline,
 						phone: barbershop.phone === null ? '' : barbershop.phone,
 						city: barbershop.city,
@@ -128,28 +65,126 @@ class BarberShopForm extends Component {
 		//}
 	};
 
-	handleSelectedImage = (e) => {
-		this.setState({ profile_image: e.target.files[0] }, () => {
-			const fd = new FormData();
-			fd.append('profile_image', this.state.profile_image);
-			let token = '';
-			if (localStorage.token) {
-				token = localStorage.token;
-			}
-			axios
-				.put(`${process.env.REACT_APP_API_URL}/barber/changeImage`, fd, {
-					headers: {
-						Authorization: `Bearer ${token}`,
-						'content-type': 'multipart/form-data'
-					}
-				})
-				.then((res) => {
-					this.setState({
-						image: `${process.env.REACT_APP_API_URL}/${res.data.barber.image}`
-					});
-				})
-				.catch((err) => {});
+	handleInput = (e) => {
+		this.setState({
+			[e.target.name]: e.target.value
 		});
+	};
+
+	handleServicerNameChange = (index) => (e) => {
+		const newServices = this.state.services.map((service, sindex) => {
+			if (index !== sindex) return service;
+			return { ...service, service_name: e.target.value };
+		});
+
+		this.setState({ services: newServices });
+	};
+
+	handleServicePriceChange = (index) => (e) => {
+		const newServices = this.state.services.map((service, sindex) => {
+			if (index !== sindex) return service;
+			return { ...service, price: e.target.value };
+		});
+
+		this.setState({ services: newServices });
+	};
+
+	handleTimeInput = (e, { name, value }) => {
+		let newOperationHours = [];
+		const day = name.substring(0, 1);
+		const time = name.substring(2);
+		this.state.operation_hours.map((operation_hour) => {
+			if (operation_hour['day'].toString() === day) {
+				operation_hour[time] = value;
+			}
+			return (newOperationHours = [ ...newOperationHours, operation_hour ]);
+		});
+		this.setState({
+			operation_hours: newOperationHours
+		});
+	};
+
+	handleAddService = (e) => {
+		e.preventDefault();
+		this.setState({ services: this.state.services.concat([ { service_name: '', price: '' } ]) });
+	};
+
+	handleRemoveService = (idx) => () => {
+		this.setState({ services: this.state.services.filter((s, sidx) => idx !== sidx) });
+	};
+
+	handleInput = (e) => {
+		this.setState({
+			[e.target.name]: e.target.value
+		});
+	};
+
+	handleSelectedImage = (e) => {
+		if (this.props.path === '/barber/edit') {
+			this.setState({ image: e.target.files[0] }, () => {
+				const fd = new FormData();
+				fd.append('profile_image', this.state.image);
+				let token = '';
+				if (localStorage.token) {
+					token = localStorage.token;
+				}
+				axios
+					.put(`${process.env.REACT_APP_API_URL}/barber/changeImage`, fd, {
+						headers: {
+							Authorization: `Bearer ${token}`,
+							'content-type': 'multipart/form-data'
+						}
+					})
+					.then((res) => {
+						this.setState({
+							image: `${process.env.REACT_APP_API_URL}/${res.data.barber.image}`
+						});
+					})
+					.catch((err) => {});
+			});
+		} else {
+			this.setState({
+				image: URL.createObjectURL(e.target.files[0]),
+				profile_image: e.target.files[0]
+			});
+		}
+	};
+
+	setStateForm = (isEdit) => {
+		const formData = new FormData();
+		if (!isEdit) {
+			formData.append('profile_image', this.state.profile_image);
+		}
+		formData.append(
+			'data',
+			JSON.stringify({
+				name: this.state.name,
+				tagline: this.state.tagline,
+				phone: this.state.phone,
+				address: this.state.address,
+				city: this.state.city,
+				services: this.state.services,
+				operation_hours: this.state.operation_hours
+			})
+		);
+		return formData;
+	};
+
+	handleSubmit = (e) => {
+		e.preventDefault();
+		let formData = '';
+		if (this.props.path === '/barber/edit') {
+			formData = this.setStateForm(false);
+			this.props.editBarber(formData, this.state.id);
+		} else {
+			if (this.state.image !== null) {
+				this.setState({
+					image: this.state.profile_image
+				});
+			}
+			formData = this.setStateForm(true);
+			this.props.createBarber(formData);
+		}
 	};
 
 	render() {
@@ -305,4 +340,4 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default connect(mapStateToProps, { createBarber })(BarberShopForm);
+export default connect(mapStateToProps, { createBarber, editBarber })(BarberShopForm);

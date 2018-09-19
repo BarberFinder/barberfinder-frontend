@@ -17,7 +17,7 @@ const Slide = (props) => {
 								survived not only five centuries.
 							</p>
 							<div className="btn_group">
-								<Link to="/" className="default_btn">
+								<Link to="/barber/list" className="default_btn">
 									Find Your Barber
 								</Link>
 							</div>
