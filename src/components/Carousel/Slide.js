@@ -13,7 +13,7 @@ const Slide = (props) => {
 							<h3 className="text-white slider-text-h3">{heading3}</h3>
 							<h1 className="text-white slider-text-h1">{heading1}</h1>
 							<p className="text-white slider-p">
-							To be a real man requires a good hairstyle and good character.
+							To be a real men requires a good hairstyle and good character.
 							</p>
 							<div className="btn_group">
 								<Link to="/barber/list" className="default_btn">

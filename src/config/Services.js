@@ -8,7 +8,7 @@ const ServicesConfig = {
 		{
 			background_image_url: 'services/service-2.jpg',
 			name: 'Beard Triming',
-			description: "Make sure your hair and beard are neat because this is important"
+			description: "Make sure your hair and beard are neat to be real men"
 		},
 		{
 			background_image_url: 'services/service-3.jpg',
@@ -18,7 +18,7 @@ const ServicesConfig = {
 		{
 			background_image_url: 'services/service-4.jpg',
 			name: 'Face Masking',
-			description: "Fresh face is one of the important things in men"
+			description: "Fresh faces and good looks are mandatory for a real men"
 		}
 	]
 };
