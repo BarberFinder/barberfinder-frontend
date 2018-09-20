@@ -12,7 +12,7 @@ class LoginForm extends Component {
 			email: this.props.email,
 			password: this.props.password,
 			isAuthenticated: this.props.isAuthenticated,
-			isLoading: this.props.isLoading
+			isLoading: false
 		};
 	}
 
@@ -24,10 +24,12 @@ class LoginForm extends Component {
 
 	login = (e) => {
 		e.preventDefault();
-		this.props.login(this.state);
 		this.setState({
-			isLoading: false
+			isLoading: true,
+			email: '',
+			password: ''
 		});
+		this.props.login(this.state);
 	};
 
 	componentWillReceiveProps(nextProps) {
@@ -90,6 +92,7 @@ class LoginForm extends Component {
 						Login
 					</button>
 				</form>
+				{this.state.isLoading === true && <Loading />}
 			</React.Fragment>
 		);
 	}

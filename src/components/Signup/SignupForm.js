@@ -5,6 +5,7 @@ import { signup } from '../../actions/authActions';
 import { verifyToken } from '../../actions/authActions';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import Loading from '../Common/Loading';
 
 class SignupForm extends Component {
 	constructor(props) {
@@ -21,7 +22,8 @@ class SignupForm extends Component {
 				date: this.props.birthday.date,
 				month: this.props.birthday.month,
 				year: this.props.birthday.year
-			}
+			},
+			isLoading: false
 		};
 	}
 
@@ -52,6 +54,9 @@ class SignupForm extends Component {
 			phone: this.state.phone
 		};
 		this.props.signup(user);
+		this.setState({
+			isLoading: true
+		});
 	};
 
 	handleBirthday = (e) => {
@@ -158,6 +163,7 @@ class SignupForm extends Component {
 						Sign up
 					</button>
 					<div id="msg-status" className="alert" role="alert" />
+					{this.state.isLoading === true && <Loading />}
 				</form>
 			</React.Fragment>
 		);

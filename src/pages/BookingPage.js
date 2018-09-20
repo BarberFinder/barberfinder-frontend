@@ -4,6 +4,7 @@ import Booking from '../components/User/Booking';
 import { connect } from 'react-redux';
 import { getCurrentUser } from '../actions/userActions';
 import Loading from '../components/Common/Loading';
+import { Redirect } from 'react-router-dom';
 
 class BookingPage extends Component {
 	constructor(props) {
@@ -23,6 +24,7 @@ class BookingPage extends Component {
 			<React.Fragment>
 				<Header />
 				<Booking booking={this.props.user.reservations} />
+				{!this.props.isAuthenticated && <Redirect to="/" />}
 			</React.Fragment>
 		);
 	}
@@ -30,7 +32,6 @@ class BookingPage extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		user: state.user.user,
 		isUserLoaded: state.user.isUserLoaded
 	};
 };

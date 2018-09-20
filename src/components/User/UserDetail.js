@@ -10,6 +10,7 @@ class UserDetail extends Component {
 		this.state = {};
 	}
 	render() {
+		console.log(this.props);
 		const { first_name, last_name, birthday, image, email, phone, username } = this.props.user;
 		let userBirthday = '';
 		if (birthday) {

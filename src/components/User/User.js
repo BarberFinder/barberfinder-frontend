@@ -5,14 +5,14 @@ import { connect } from 'react-redux';
 import { getCurrentUser } from '../../actions/userActions';
 import { getBarber } from '../../actions/barberActions';
 import Loading from '../Common/Loading';
+import axios from 'axios';
 
 class User extends Component {
 	constructor(props) {
 		super(props);
-	}
-
-	componentDidMount() {
-		this.props.getCurrentUser();
+		this.state = {
+			user: ''
+		};
 	}
 
 	render() {
@@ -22,7 +22,7 @@ class User extends Component {
 		) : (
 			<section className="blog_section padding user_profile">
 				<div className="container">
-					<UserDetail user={this.props.user} />
+					<UserDetail user={this.state.user} />
 					<Barbershop barbershop={this.props.barbershop} />
 				</div>
 			</section>
@@ -30,13 +30,15 @@ class User extends Component {
 	}
 }
 
-const mapStateToProps = (state) => {
-	return {
-		user: state.user.user,
-		isUserLoaded: state.user.isUserLoaded,
-		isBarberLoaded: state.barber.isBarberLoaded,
-		barbershop: state.barber.barbershop
-	};
-};
+export default User;
 
-export default connect(mapStateToProps, { getCurrentUser, getBarber })(User);
+// const mapStateToProps = (state) => {
+// 	return {
+// 		user: state.user.user,
+// 		isUserLoaded: state.user.isUserLoaded,
+// 		isBarberLoaded: state.barber.isBarberLoaded,
+// 		barbershop: state.barber.barbershop
+// 	};
+// };
+
+// export default connect(mapStateToProps, { getCurrentUser, getBarber })(User);
