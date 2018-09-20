@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { Button } from 'semantic-ui-react';
+import { Button, Segment, Dimmer, Loader } from 'semantic-ui-react';
 import { TimeInput } from 'semantic-ui-calendar-react';
 import { createBarber, editBarber } from '../../actions/barberActions';
 import { connect } from 'react-redux';
 import BarberService from './BarberService';
 import axios from 'axios';
 import days from '../../helper/days';
+import Loading from '../Common/Loading';
+import { Redirect } from 'react-router-dom';
 
 class BarberShopForm extends Component {
 	constructor(props) {
@@ -20,49 +22,53 @@ class BarberShopForm extends Component {
 			operation_hours: this.props.operation_hours,
 			image: this.props.image,
 			profile_image: null,
-			id: this.props.id
+			id: this.props.id,
+			isLoading: this.props.isLoading,
+			isBarberLoaded: this.props.isBarberLoaded
 		};
 	}
 
 	componentDidMount = async () => {
 		const path = this.props.path;
-		//if (path === '/barber/edit') {
-		let token = '';
-		if (localStorage.token) {
-			token = localStorage.token;
+		if (path === '/barber/edit') {
+			let token = '';
+			if (localStorage.token) {
+				token = localStorage.token;
+			}
+			await axios
+				.get(`${process.env.REACT_APP_API_URL}/barber`, {
+					headers: {
+						Authorization: `Bearer ${token}`
+					}
+				})
+				.then((res) => {
+					if (res.data.data !== null) {
+						let barbershop = res.data.data;
+						let operation_hours = barbershop.operation_hours;
+						operation_hours.map((operation_hour, index) => {
+							let day = days.find((day) => day.number.toString() === operation_hour.day.toString());
+							operation_hour.name = day.name;
+							(operation_hour.open_hour = operation_hour.open_hour.substring(0, 5)),
+								(operation_hour.close_hour = operation_hour.close_hour.substring(0, 5));
+						});
+						this.setState({
+							name: barbershop.name,
+							address: barbershop.address === null ? this.props.address : barbershop.address,
+							tagline: barbershop.tagline,
+							phone: barbershop.phone === null ? '' : barbershop.phone,
+							city: barbershop.city,
+							services: barbershop.services,
+							operation_hours: operation_hours,
+							id: barbershop.id,
+							image:
+								barbershop.image !== null || barbershop.image
+									? `${process.env.REACT_APP_API_URL}/${barbershop.image}`
+									: this.props.image
+						});
+					}
+				})
+				.catch((err) => {});
 		}
-		await axios
-			.get(`${process.env.REACT_APP_API_URL}/barber`, {
-				headers: {
-					Authorization: `Bearer ${token}`
-				}
-			})
-			.then((res) => {
-				if (res.data.data !== null) {
-					let barbershop = res.data.data;
-					let operation_hours = barbershop.operation_hours;
-					operation_hours.map((operation_hour, index) => {
-						let day = days.find((day) => day.number.toString() === operation_hour.day.toString());
-						operation_hour.name = day.name;
-					});
-					this.setState({
-						name: barbershop.name,
-						address: barbershop.address === null ? this.props.address : barbershop.address,
-						tagline: barbershop.tagline,
-						phone: barbershop.phone === null ? '' : barbershop.phone,
-						city: barbershop.city,
-						services: barbershop.services,
-						operation_hours: operation_hours,
-						id: barbershop.id,
-						image:
-							barbershop.image !== null || barbershop.image
-								? `${process.env.REACT_APP_API_URL}/${barbershop.image}`
-								: this.props.image
-					});
-				}
-			})
-			.catch((err) => {});
-		//}
 	};
 
 	handleInput = (e) => {
@@ -150,11 +156,9 @@ class BarberShopForm extends Component {
 		}
 	};
 
-	setStateForm = (isEdit) => {
+	initializeFormData = () => {
 		const formData = new FormData();
-		if (!isEdit) {
-			formData.append('profile_image', this.state.profile_image);
-		}
+		formData.append('profile_image', this.state.profile_image);
 		formData.append(
 			'data',
 			JSON.stringify({
@@ -170,11 +174,20 @@ class BarberShopForm extends Component {
 		return formData;
 	};
 
+	// componentWillReceiveProps(nextProps) {
+	// 	if (!nextProps.isLoading) {
+	// 		this.setState({
+	// 			isLoading: nextProps.isLoading
+	// 		});
+	// 	}
+	// }
+
 	handleSubmit = (e) => {
 		e.preventDefault();
 		let formData = '';
+
 		if (this.props.path === '/barber/edit') {
-			formData = this.setStateForm(false);
+			formData = this.initializeFormData();
 			this.props.editBarber(formData, this.state.id);
 		} else {
 			if (this.state.image !== null) {
@@ -182,145 +195,156 @@ class BarberShopForm extends Component {
 					image: this.state.profile_image
 				});
 			}
-			formData = this.setStateForm(true);
+			this.setState({
+				isLoading: true
+			});
+			formData = this.initializeFormData();
 			this.props.createBarber(formData);
+		}
+	};
+
+	renderRedirect = () => {
+		if (this.state.isLoading === false) {
+			return <Redirect to="/barber" />;
 		}
 	};
 
 	render() {
 		return (
-			<form encType="multipart/form-data" onSubmit={this.handleSubmit} className="form-horizontal">
-				<div className="col-sm-4">
-					<div className="barbershop_profile_image">
-						<img src={this.state.image} className="img-responsive" />
-					</div>
+			<React.Fragment>
+				<form encType="multipart/form-data" onSubmit={this.handleSubmit} className="form-horizontal">
+					<div className="col-sm-4">
+						<div className="barbershop_profile_image">
+							<img src={this.state.image} className="img-responsive" />
+						</div>
 
-					<input
-						onChange={this.handleSelectedImage}
-						type="file"
-						name="profile_image"
-						id="file"
-						className="inputfile"
-					/>
-					<label htmlFor="file">Choose a file</label>
-				</div>
-
-				<div className="col-sm-8">
-					<h2>Profile</h2>
-					<div className="form-group row">
-						<div className="col-xs-12">
-							<input
-								onChange={this.handleInput}
-								type="text"
-								name="name"
-								value={this.state.name}
-								className="form-control"
-								placeholder="Name"
-								required
-							/>
-						</div>
-					</div>
-					<div className="form-group row">
-						<div className="col-xs-12">
-							<input
-								onChange={this.handleInput}
-								type="text"
-								value={this.state.tagline}
-								name="tagline"
-								className="form-control"
-								placeholder="Tagline"
-								required
-							/>
-						</div>
-					</div>
-					<div className="form-group row">
-						<div className="col-xs-12">
-							<input
-								onChange={this.handleInput}
-								type="text"
-								name="phone"
-								value={this.state.phone}
-								className="form-control"
-								placeholder="Phone"
-								required
-							/>
-						</div>
-					</div>
-					<div className="form-group row">
-						<div className="col-xs-12">
-							<textarea
-								onChange={this.handleInput}
-								rows="3"
-								value={this.state.address}
-								name="address"
-								className="form-control"
-								placeholder="Address"
-							/>
-						</div>
-					</div>
-					<div className="form-group row">
-						<div className="col-xs-12">
-							<input
-								onChange={this.handleInput}
-								type="text"
-								name="city"
-								value={this.state.city}
-								className="form-control"
-								placeholder="City"
-								required
-							/>
-						</div>
-					</div>
-					<h2>Services</h2>
-					{this.state.services.map((service, index) => (
-						<BarberService
-							onServicePriceChangeHandler={this.handleServicePriceChange}
-							onServiceNameChangeHandler={this.handleServicerNameChange}
-							onRemoveServiceHandler={this.handleRemoveService}
-							index={index}
-							service={service}
-							key={index}
-							{...this.props}
+						<input
+							onChange={this.handleSelectedImage}
+							type="file"
+							name="profile_image"
+							id="file"
+							className="inputfile"
 						/>
-					))}
-					<Button
-						color="black"
-						onClick={this.handleAddService}
-						content="Add Service"
-						icon="plus circle"
-						labelPosition="left"
-					/>
-					<h2>Operation Hours</h2>
-					{this.state.operation_hours.map((operation_hour, index) => (
-						<div key={index} className="form-group">
-							<div className="col-sm-2">
-								<label>{operation_hour.name}</label>
-							</div>
-							<div className="col-sm-4">
-								<TimeInput
-									name={`${operation_hour.day}_open_hour`}
-									placeholder="Open"
-									value={operation_hour.open_hour}
-									iconPosition="left"
-									onChange={this.handleTimeInput}
-								/>
-							</div>
-							<div className="col-sm-4">
-								<TimeInput
-									name={`${operation_hour.day}_close_hour`}
-									placeholder="Close"
-									value={operation_hour.close_hour}
-									iconPosition="left"
-									onChange={this.handleTimeInput}
+						<label htmlFor="file">Choose a file</label>
+					</div>
+
+					<div className="col-sm-8">
+						<h2>Profile</h2>
+						<div className="form-group row">
+							<div className="col-xs-12">
+								<input
+									onChange={this.handleInput}
+									type="text"
+									name="name"
+									value={this.state.name}
+									className="form-control"
+									placeholder="Name"
+									required
 								/>
 							</div>
 						</div>
-					))}
-					<button onClick={this.handleSubmit} className="default_btn col-xs-4">
-						{this.props.path === '/barber/edit' ? 'Edit' : 'Create'}
-					</button>
-				</div>
-			</form>
+						<div className="form-group row">
+							<div className="col-xs-12">
+								<input
+									onChange={this.handleInput}
+									type="text"
+									value={this.state.tagline}
+									name="tagline"
+									className="form-control"
+									placeholder="Tagline"
+									required
+								/>
+							</div>
+						</div>
+						<div className="form-group row">
+							<div className="col-xs-12">
+								<input
+									onChange={this.handleInput}
+									type="text"
+									name="phone"
+									value={this.state.phone}
+									className="form-control"
+									placeholder="Phone"
+									required
+								/>
+							</div>
+						</div>
+						<div className="form-group row">
+							<div className="col-xs-12">
+								<textarea
+									onChange={this.handleInput}
+									rows="3"
+									value={this.state.address}
+									name="address"
+									className="form-control"
+									placeholder="Address"
+								/>
+							</div>
+						</div>
+						<div className="form-group row">
+							<div className="col-xs-12">
+								<input
+									onChange={this.handleInput}
+									type="text"
+									name="city"
+									value={this.state.city}
+									className="form-control"
+									placeholder="City"
+									required
+								/>
+							</div>
+						</div>
+						<h2>Services</h2>
+						{this.state.services.map((service, index) => (
+							<BarberService
+								onServicePriceChangeHandler={this.handleServicePriceChange}
+								onServiceNameChangeHandler={this.handleServicerNameChange}
+								onRemoveServiceHandler={this.handleRemoveService}
+								index={index}
+								service={service}
+								key={index}
+								{...this.props}
+							/>
+						))}
+						<Button
+							color="black"
+							onClick={this.handleAddService}
+							content="Add Service"
+							icon="plus circle"
+							labelPosition="left"
+						/>
+						<h2>Operation Hours</h2>
+						{this.state.operation_hours.map((operation_hour, index) => (
+							<div key={index} className="form-group">
+								<div className="col-sm-2">
+									<label>{operation_hour.name}</label>
+								</div>
+								<div className="col-sm-4">
+									<TimeInput
+										name={`${operation_hour.day}_open_hour`}
+										placeholder="Open"
+										value={operation_hour.open_hour}
+										iconPosition="left"
+										onChange={this.handleTimeInput}
+									/>
+								</div>
+								<div className="col-sm-4">
+									<TimeInput
+										name={`${operation_hour.day}_close_hour`}
+										placeholder="Close"
+										value={operation_hour.close_hour}
+										iconPosition="left"
+										onChange={this.handleTimeInput}
+									/>
+								</div>
+							</div>
+						))}
+						<button onClick={this.handleSubmit} className="default_btn col-xs-4">
+							{this.props.path === '/barber/edit' ? 'Edit' : 'Create'}
+						</button>
+					</div>
+				</form>
+			</React.Fragment>
 		);
 	}
 }
@@ -336,7 +360,9 @@ const mapStateToProps = (state) => {
 		barbershop: state.barber.barbershop,
 		file: state.barber.file,
 		image: state.barber.image,
-		id: state.barber.id
+		id: state.barber.id,
+		isLoading: state.barber.isLoading,
+		isBarberLoaded: state.barber.isBarberLoaded
 	};
 };
 

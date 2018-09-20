@@ -1,17 +1,20 @@
 import type from '../actions/types';
 
 const initialState = {
-	reservation: {
-		reservationDate: '',
-		email: '',
-		phone: ''
-	}
+	reservationDate: '',
+	email: '',
+	phone: '',
+	isDoneReservation: ''
 };
 
 const reservation = (state = initialState, action) => {
 	switch (action.type) {
 		case type.CREATE_RESERVATION:
-			return state;
+			const data = action.payload.data;
+			return {
+				...state,
+				isDoneReservation: data.status
+			};
 		default:
 			return state;
 	}

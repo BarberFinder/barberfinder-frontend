@@ -6,6 +6,7 @@ import days from '../../helper/days';
 import { Button, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import BarberNotFound from './BarberNotFound';
+import barberHelper from '../../helper/barber';
 
 class BarberShopProfile extends Component {
 	constructor(props) {
@@ -22,6 +23,7 @@ class BarberShopProfile extends Component {
 	render() {
 		if (this.props.barbershop) {
 			const { name, phone, services, address, city, operation_hours } = this.props.barbershop;
+			let newOperationHours = barberHelper.getOperationHours(operation_hours);
 			return (
 				<React.Fragment>
 					{operation_hours && services ? (
@@ -55,15 +57,13 @@ class BarberShopProfile extends Component {
 											<div className="price_wrap">
 												<h3>Operation Hours</h3>
 											</div>
-											{operation_hours.map((operation_hour, index) => (
+											{newOperationHours.map((operation_hour, index) => (
 												<div key={index} className="operation-hours">
 													<div>
-														<h4>
-															{days.find((day) => day.number == operation_hour.day).name}
-														</h4>
-														<span>{operation_hour.open_hour.toString()}</span>
+														<h4>{operation_hour.day.name}</h4>
+														<span>{operation_hour.hour.open_hour}</span>
 														&nbsp;-&nbsp;
-														<span>{operation_hour.close_hour.toString()}</span>
+														<span>{operation_hour.hour.close_hour}</span>
 														<br />
 													</div>
 													<br />

@@ -1,5 +1,5 @@
 import React from 'react';
-import defaultProfile from '../../assets/default-avatar.png';
+import defaultProfile from '../../assets/man.svg';
 import { Dropdown } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
@@ -18,10 +18,10 @@ const ProfileAvatar = (props) => {
 
 	const options = [
 		{
-			key: 'account',
+			key: 'user',
 			text: (
 				<span>
-					<Link to="/account">Account</Link>
+					<Link to="/user">Account</Link>
 				</span>
 			)
 		},

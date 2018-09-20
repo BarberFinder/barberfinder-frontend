@@ -5,6 +5,7 @@ import './App.css';
 import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import BarberPage from './pages/BarberPage';
+import UserPage from './pages/UserPage';
 import { verifyToken } from './actions/authActions';
 import { connect } from 'react-redux';
 import Loading from './components/Common/Loading';
@@ -31,6 +32,7 @@ class App extends Component {
 					<Route path="/login" component={LoginPage} />
 					<Route path="/signup" component={SignupPage} />
 					<Route path="/barber" component={BarberPage} />
+					<Route path="/user" component={UserPage} />
 				</Switch>
 			</Router>
 		);

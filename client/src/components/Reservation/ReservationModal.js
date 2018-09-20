@@ -5,12 +5,18 @@ import moment from 'moment';
 import barberHelper from '../../helper/barber';
 import { createReservation } from '../../actions/reservationActions';
 import { connect } from 'react-redux';
+import Loading from '../Common/Loading';
+import { Redirect } from 'react-router-dom';
 
 class ReservationModalForm extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			reservation: this.props.reservation
+			reservationDate: this.props.reservationDate,
+			email: this.props.email,
+			phone: this.props.phone,
+			barbershopId: '',
+			isDoneReservation: this.props.isDoneReservation
 		};
 	}
 
@@ -26,7 +32,27 @@ class ReservationModalForm extends Component {
 		});
 	};
 
+	componentDidMount() {
+		this.setState({
+			barbershopId: this.props.barber.id
+		});
+	}
+
+	createReservation = (e) => {
+		e.preventDefault();
+		this.props.createReservation(this.state);
+		this.setState({
+			isDoneReservation: this.props.isDoneReservation
+		});
+		if (this.state.isDoneReservation === '') {
+			return <Loading />;
+		}
+	};
+
 	render() {
+		if (this.state.isDoneReservation === 'success') {
+			return <Redirect to="/barber/list" />;
+		}
 		const barber = this.props.barber;
 		let operation_hours = barberHelper.getOperationHours(barber.operation_hours);
 		return (
@@ -76,10 +102,10 @@ class ReservationModalForm extends Component {
 								<div className="form-group">
 									<div className="col-xs-12 col-sm-8">
 										<DateTimeInput
-											name="dateTime"
+											name="reservationDate"
 											placeholder="Date Time"
 											minDate={moment()}
-											value={this.state.appointment.reservationDate}
+											value={this.state.reservationDate}
 											iconPosition="left"
 											onChange={this.handleReservationDate}
 											className="full_width"
@@ -90,8 +116,8 @@ class ReservationModalForm extends Component {
 									<div className="col-xs-12 col-sm-8">
 										<input
 											type="email"
-											name="appointment.email"
-											value={this.state.appointment.email}
+											name="email"
+											value={this.state.email}
 											className="form-control"
 											onChange={this.handleInput}
 											placeholder="Your Email"
@@ -107,14 +133,17 @@ class ReservationModalForm extends Component {
 											name="phone"
 											className="form-control"
 											onChange={this.handleInput}
-											value={this.state.appointment.phone}
+											value={this.state.phone}
 											placeholder="Your phone"
-											required=""
 										/>
 									</div>
 								</div>
 								<div className="button-wrapper col-xs-12 col-sm-12 pull-left">
-									<button className="default_btn mr-10" type="submit">
+									<button
+										onClick={(e) => this.createReservation(e)}
+										className="default_btn mr-10"
+										type="submit"
+									>
 										Book Now
 									</button>
 									<button className="close_btn" onClick={(e) => this.props.onCloseModal(e)}>
@@ -133,7 +162,10 @@ class ReservationModalForm extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		reservation: state.reservation.reservation
+		reservationDate: state.reservation.reservationDate,
+		email: state.reservation.email,
+		phone: state.reservation.phone,
+		isDoneReservation: state.reservation.isDoneReservation
 	};
 };
 
