@@ -1,6 +1,6 @@
 const api = {
-	create: `${process.env.REACT_APP_API_URL}/barber/create`,
-	getBarber: `${process.env.REACT_APP_API_URL}/barber`
+	create: 'http://localhost:4200/barber/create',
+	getBarber: 'http://localhost:4200/barber'
 };
 
 export default api;

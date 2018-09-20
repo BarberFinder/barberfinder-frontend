@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
-import Sidebar from './Sidebar';
+import UserDetail from '../User/UserDetail';
+import Barbershop from './BarberShop';
 
 class User extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {};
-	}
 	render() {
 		return (
-			<section className="blog_section padding">
+			<section className="blog_section padding user_profile">
 				<div className="container">
-					<Sidebar />
+					<UserDetail user={this.props.user} />
+					<Barbershop barbershop={this.props.barbershop} />
 				</div>
 			</section>
 		);

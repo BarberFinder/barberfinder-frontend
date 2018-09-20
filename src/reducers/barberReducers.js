@@ -27,7 +27,8 @@ const initialState = {
 	id: '',
 	image: defaultImage,
 	barbershopList: [],
-	isLoading: true
+	isLoading: null,
+	isBarberLoaded: false
 };
 
 const barber = (state = initialState, action) => {
@@ -35,7 +36,8 @@ const barber = (state = initialState, action) => {
 		case type.CREATE_BARBER:
 			return {
 				...state,
-				barbershop: action.payload.barber
+				barbershop: action.payload.barber,
+				isLoading: false
 			};
 		case type.EDIT_BARBER:
 			return {
@@ -46,7 +48,8 @@ const barber = (state = initialState, action) => {
 		case type.GET_BARBER:
 			return {
 				...state,
-				barbershop: action.payload.data
+				barbershop: action.payload.data,
+				isBarberLoaded: true
 			};
 		case type.GET_BARBER_LIST:
 			return {

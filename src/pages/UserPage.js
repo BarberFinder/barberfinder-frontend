@@ -3,6 +3,8 @@ import User from '../components/User/User';
 import Header from '../components/Header/Header';
 import { connect } from 'react-redux';
 import { getCurrentUser } from '../actions/userActions';
+import { getBarber } from '../actions/barberActions';
+import Loading from '../components/Common/Loading';
 
 class UserPage extends Component {
 	constructor(props) {
@@ -11,12 +13,16 @@ class UserPage extends Component {
 	}
 	componentDidMount() {
 		this.props.getCurrentUser();
+		this.props.getBarber();
 	}
 	render() {
-		return (
+		const { isUserLoaded, isBarberLoaded } = this.props;
+		return !isUserLoaded && !isBarberLoaded ? (
+			<Loading />
+		) : (
 			<React.Fragment>
 				<Header />
-				<User />
+				<User user={this.props.user} barbershop={this.props.barbershop} />
 			</React.Fragment>
 		);
 	}
@@ -25,8 +31,15 @@ class UserPage extends Component {
 const mapStateToProps = (state) => {
 	return {
 		user: state.user.user,
-		isLoading: state.user.isLoadings
+		isUserLoaded: state.user.isUserLoaded,
+		isBarberLoaded: state.barber.isBarberLoaded,
+		barbershop: state.barber.barbershop
 	};
 };
 
-export default connect(mapStateToProps, { getCurrentUser })(UserPage);
+const mapDispatchToProps = (dispatch) => ({
+	getCurrentUser: () => dispatch(getCurrentUser()),
+	getBarber: () => dispatch(getBarber())
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserPage);

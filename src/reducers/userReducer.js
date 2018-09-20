@@ -2,7 +2,7 @@ import type from '../actions/types';
 
 const initialState = {
 	user: '',
-	isLoading: true
+	isUserLoaded: false
 };
 
 const user = (state = initialState, action) => {
@@ -11,7 +11,7 @@ const user = (state = initialState, action) => {
 			return {
 				...state,
 				user: action.payload.data,
-				isLoading: false
+				isUserLoaded: true
 			};
 		default:
 			return state;
