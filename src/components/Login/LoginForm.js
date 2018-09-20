@@ -37,7 +37,11 @@ class LoginForm extends Component {
 
 	renderLoading = () => {
 		if (!this.props.isAuthenticated) {
-			return <Loading />;
+			return (
+				<div>
+					<Loading />
+				</div>
+			);
 		} else {
 			return <Redirect to="/" />;
 		}

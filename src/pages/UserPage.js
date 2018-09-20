@@ -13,7 +13,7 @@ class UserPage extends Component {
 				<Switch>
 					<Route path="/user" component={User} />
 				</Switch>
-				{/* {!this.props.isAuthenticated && <Redirect to="/" />} */}
+				{!this.props.isAuthenticated && <Redirect to="/" />}
 			</React.Fragment>
 		);
 	}

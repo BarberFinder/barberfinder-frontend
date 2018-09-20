@@ -8,9 +8,10 @@ import { logout } from '../../actions/authActions';
 
 class HeaderPage extends Component {
 	logout = () => {
-		localStorage.removeItem('token');
 		this.props.logout();
 	};
+
+	componentDidMount() {}
 
 	render() {
 		return (

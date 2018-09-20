@@ -29,6 +29,9 @@ class BarberShopForm extends Component {
 	}
 
 	componentDidMount = async () => {
+		this.setState({
+			isLoading: false
+		});
 		const path = this.props.path;
 		if (path === '/barber/edit') {
 			let token = '';
@@ -174,14 +177,6 @@ class BarberShopForm extends Component {
 		return formData;
 	};
 
-	// componentWillReceiveProps(nextProps) {
-	// 	if (!nextProps.isLoading) {
-	// 		this.setState({
-	// 			isLoading: nextProps.isLoading
-	// 		});
-	// 	}
-	// }
-
 	handleSubmit = (e) => {
 		e.preventDefault();
 		let formData = '';
@@ -195,22 +190,26 @@ class BarberShopForm extends Component {
 					image: this.state.profile_image
 				});
 			}
-			this.setState({
-				isLoading: true
-			});
 			formData = this.initializeFormData();
 			this.props.createBarber(formData);
 		}
+		this.setState({
+			isLoading: true
+		});
 	};
 
-	renderRedirect = () => {
-		if (this.state.isLoading === false) {
+	renderLoading = () => {
+		if (!this.props.isSuccess) {
+			return <Loading />;
+		} else {
 			return <Redirect to="/barber" />;
 		}
 	};
 
 	render() {
-		return (
+		return this.state.isLoading ? (
+			<React.Fragment>{this.renderLoading()}</React.Fragment>
+		) : (
 			<React.Fragment>
 				<form encType="multipart/form-data" onSubmit={this.handleSubmit} className="form-horizontal">
 					<div className="col-sm-4">
@@ -362,7 +361,8 @@ const mapStateToProps = (state) => {
 		image: state.barber.image,
 		id: state.barber.id,
 		isLoading: state.barber.isLoading,
-		isBarberLoaded: state.barber.isBarberLoaded
+		isBarberLoaded: state.barber.isBarberLoaded,
+		isSuccess: state.barber.isSuccess
 	};
 };
 

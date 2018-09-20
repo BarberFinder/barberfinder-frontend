@@ -27,17 +27,10 @@ class BarberShopProfileList extends Component {
 		});
 	};
 
-	renderRedirect = () => {
-		if (!this.props.isAuthenticated) {
-			return <Redirect to="/login" />;
-		}
-	};
-
 	render() {
 		const { image, name, city } = this.props.barber;
 		return (
 			<React.Fragment>
-				{this.renderRedirect()}
 				<div className="col-xs-6">
 					<div className="blog_post">
 						<img

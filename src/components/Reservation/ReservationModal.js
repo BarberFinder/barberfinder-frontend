@@ -84,9 +84,7 @@ class ReservationModalForm extends Component {
 						<div className="col-sm-6 col-xs-12">
 							<div className="section_heading mb-40">
 								<h2>Appointment Now</h2>
-								<p>
-									Get your great Hairstyle.
-								</p>
+								<p>Get your great Hairstyle.</p>
 							</div>
 							<form className="form-horizontal">
 								<div className="form-group">

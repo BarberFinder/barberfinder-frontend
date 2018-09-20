@@ -5,7 +5,6 @@ import Services from '../components/Services/Services';
 import WhyUs from '../components/WhyUs/WhyUs';
 import PopularBarberGrid from '../components/PopularBarbers/PopularBarberGrid';
 import Footer from '../components/Footer/Footer';
-import ScrollToTop from '../components/Common/ScrollToTop';
 
 class Homepage extends Component {
 	constructor(props) {
@@ -25,7 +24,6 @@ class Homepage extends Component {
 				<WhyUs />
 				<PopularBarberGrid />
 				<Footer />
-				<ScrollToTop />
 			</Fragment>
 		);
 	}
