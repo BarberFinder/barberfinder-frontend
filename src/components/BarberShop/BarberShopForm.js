@@ -24,6 +24,7 @@ class BarberShopForm extends Component {
 			profile_image: null,
 			id: this.props.id,
 			isLoading: this.props.isLoading,
+			isSuccess: false,
 			isBarberLoaded: this.props.isBarberLoaded
 		};
 	}
@@ -191,7 +192,25 @@ class BarberShopForm extends Component {
 				});
 			}
 			formData = this.initializeFormData();
-			this.props.createBarber(formData);
+			let token = '';
+			if (localStorage.token) {
+				token = localStorage.token;
+			}
+			axios
+				.post(`${process.env.REACT_APP_API_URL}/barber/create`, formData, {
+					headers: {
+						Authorization: `Bearer ${token}`,
+						'Content-Type': 'multipart/form-data'
+					}
+				})
+				.then((res) => {
+					if (res.data.barber) {
+						this.setState({
+							isSuccess: true
+						});
+					}
+				})
+				.catch((err) => {});
 		}
 		this.setState({
 			isLoading: true
@@ -199,7 +218,7 @@ class BarberShopForm extends Component {
 	};
 
 	renderLoading = () => {
-		if (!this.props.isSuccess) {
+		if (this.state.isSuccess) {
 			return <Loading />;
 		} else {
 			return <Redirect to="/barber" />;

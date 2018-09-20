@@ -5,16 +5,17 @@ import ReservationModal from '../Reservation/ReservationModal';
 import BarberShopProfileList from './BarberShopProfileList';
 import { Redirect } from 'react-router-dom';
 import Loading from '../Common/Loading';
+import axios from 'axios';
 
 class BarberShopList extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			barbershopList: ''
+		};
 	}
 
-	componentDidMount() {
-		this.props.getBarberList();
-	}
+	componentDidMount() {}
 
 	handleRedirect() {
 		if (!this.props.isAuthenticated) {
@@ -25,16 +26,12 @@ class BarberShopList extends Component {
 	render() {
 		return !this.props.isAuthenticated ? (
 			<Redirect to="/login" />
-		) : this.props.barbershopList.length === 0 ? (
-			<Loading />
 		) : (
 			<section className="blog_section padding barbershop_list">
 				<div className="container">
 					<div className="col-sm-8 xs-padding">
 						<div className="blog_items">
-							{this.props.barbershopList.map((barber, index) => (
-								<BarberShopProfileList barber={barber} key={index} />
-							))}
+							<BarberShopProfileList />
 						</div>
 					</div>
 				</div>

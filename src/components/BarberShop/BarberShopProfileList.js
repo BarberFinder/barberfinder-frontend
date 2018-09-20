@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import ReservationModal from '../Reservation/ReservationModal';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import axios from 'axios';
+import ReservationModal from '../Reservation/ReservationModal';
 
 class BarberShopProfileList extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			isOpen: false,
-			isAuthenticated: this.props.isAuthenticated
+			isAuthenticated: this.props.isAuthenticated,
+			barbershopList: []
 		};
 	}
 
@@ -27,22 +28,40 @@ class BarberShopProfileList extends Component {
 		});
 	};
 
+	componentDidMount() {
+		let token = '';
+		if (localStorage.token) {
+			token = localStorage.token;
+		}
+		axios
+			.get(`${process.env.REACT_APP_API_URL}/barber/list`, {
+				headers: {
+					Authorization: `Bearer ${token}`
+				}
+			})
+			.then((res) => {
+				this.setState({
+					barbershopList: res.data.data
+				});
+			})
+			.catch((err) => {});
+	}
+
 	render() {
-		const { image, name, city } = this.props.barber;
-		return (
-			<React.Fragment>
-				<div className="col-xs-6">
+		const barbers = this.state.barbershopList.map((barber, index) => {
+			return (
+				<div key={index} className="col-xs-6">
 					<div className="blog_post">
 						<img
 							className="img_profile_list"
-							src={`${process.env.REACT_APP_API_URL}/${image}`}
-							alt={name}
+							src={`${process.env.REACT_APP_API_URL}/${barber.image}`}
+							alt={barber.name}
 						/>
 						<div className="blog_content">
 							<h4>
-								<Link to="/">{name}</Link>
+								<Link to="/">{barber.name}</Link>
 							</h4>
-							<p>{city}</p>
+							<p>{barber.city}</p>
 							<span className="post_meta">
 								<button onClick={this.openModal} className="default_btn">
 									Book Now
@@ -50,14 +69,12 @@ class BarberShopProfileList extends Component {
 							</span>
 						</div>
 					</div>
-					{/* <ReservationModal
-						barber={this.props.barber}
-						onCloseModal={this.closeModal}
-						isOpen={this.state.isOpen}
-					/> */}
+					<ReservationModal barber={barber} onCloseModal={this.closeModal} isOpen={this.state.isOpen} />
 				</div>
-			</React.Fragment>
-		);
+			);
+		});
+
+		return <React.Fragment>{barbers}</React.Fragment>;
 	}
 }
 
