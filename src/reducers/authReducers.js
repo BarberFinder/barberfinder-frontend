@@ -1,7 +1,7 @@
 import type from '../actions/types';
 
 const initialState = {
-	isAuthenticated: null,
+	isAuthenticated: false,
 	token: '',
 	first_name: '',
 	last_name: '',
@@ -15,7 +15,9 @@ const initialState = {
 		month: '',
 		year: ''
 	},
-	user: ''
+	user: '',
+	isLoading: true,
+	isSuccess: false
 };
 
 const auth = (state = initialState, action) => {
@@ -34,14 +36,16 @@ const auth = (state = initialState, action) => {
 		case type.SIGNUP:
 			return {
 				...state,
-				token: action.payload.token
+				isLoading: false,
+				isSuccess: true
 			};
 		case type.LOGIN:
 			let payload = action.payload.data;
 			return {
 				...state,
 				error_message: payload.message,
-				token: payload.token
+				isAuthenticated: true,
+				isLoading: false
 			};
 		default:
 			return state;

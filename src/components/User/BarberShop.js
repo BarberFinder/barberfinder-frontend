@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import defaultBarbershopProfileImage from '../../assets/default-barbershop.jpg';
 import { Header } from 'semantic-ui-react';
 import BarberShopNotFound from './BarberShopNotFound';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { getBarber } from '../../actions/barberActions';
 
 class Barbershop extends Component {
 	constructor(props) {
@@ -29,9 +32,11 @@ class Barbershop extends Component {
 					<div className="blog_items">
 						<div className="col-sm-6">
 							<div className="blog-post">
-								<Header as="h4" color="brown">
-									{name}
-								</Header>
+								<Link to="/barber">
+									<Header as="h4" color="brown">
+										{name}
+									</Header>
+								</Link>
 								<p>{tagline}</p>
 							</div>
 						</div>
@@ -42,4 +47,10 @@ class Barbershop extends Component {
 	}
 }
 
-export default Barbershop;
+const mapStateToProps = (state) => {
+	return {
+		barbershop: state.barber.barbershop
+	};
+};
+
+export default connect(mapStateToProps, { getBarber })(Barbershop);

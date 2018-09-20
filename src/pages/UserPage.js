@@ -1,28 +1,19 @@
 import React, { Component } from 'react';
 import User from '../components/User/User';
+import { Switch, Route } from 'react-router-dom';
 import Header from '../components/Header/Header';
 import { connect } from 'react-redux';
-import { getCurrentUser } from '../actions/userActions';
-import { getBarber } from '../actions/barberActions';
-import Loading from '../components/Common/Loading';
+import { Redirect } from 'react-router-dom';
 
 class UserPage extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {};
-	}
-	componentDidMount() {
-		this.props.getCurrentUser();
-		this.props.getBarber();
-	}
 	render() {
-		const { isUserLoaded, isBarberLoaded } = this.props;
-		return !isUserLoaded && !isBarberLoaded ? (
-			<Loading />
-		) : (
+		return (
 			<React.Fragment>
 				<Header />
-				<User user={this.props.user} barbershop={this.props.barbershop} />
+				<Switch>
+					<Route path="/user" component={User} />
+				</Switch>
+				{/* {!this.props.isAuthenticated && <Redirect to="/" />} */}
 			</React.Fragment>
 		);
 	}
@@ -30,16 +21,8 @@ class UserPage extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		user: state.user.user,
-		isUserLoaded: state.user.isUserLoaded,
-		isBarberLoaded: state.barber.isBarberLoaded,
-		barbershop: state.barber.barbershop
+		isAuthenticated: state.auth.isAuthenticated
 	};
 };
 
-const mapDispatchToProps = (dispatch) => ({
-	getCurrentUser: () => dispatch(getCurrentUser()),
-	getBarber: () => dispatch(getBarber())
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(UserPage);
+export default connect(mapStateToProps)(UserPage);

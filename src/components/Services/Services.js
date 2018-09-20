@@ -10,8 +10,7 @@ const Services = () => {
 					<div className="section_heading align-center mb-40">
 						<h2>Our Barber Services</h2>
 						<p>
-							Lorem Ipsum is simply dummy text of the printing and typesetting industry.<br />It has
-							survived not only five centuries.
+						Make men become real men
 						</p>
 					</div>
 					{ServiceConfig.services.map((service, index) => <Service service={service} key={index} />)}

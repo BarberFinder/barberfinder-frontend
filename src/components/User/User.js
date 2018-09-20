@@ -7,8 +7,8 @@ class User extends Component {
 		return (
 			<section className="blog_section padding user_profile">
 				<div className="container">
-					<UserDetail user={this.props.user} />
-					<Barbershop barbershop={this.props.barbershop} />
+					<UserDetail />
+					<Barbershop />
 				</div>
 			</section>
 		);

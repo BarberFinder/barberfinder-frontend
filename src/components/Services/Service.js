@@ -8,9 +8,7 @@ const Service = (props) => {
 			<div className="service_content align-center">
 				<img src={imageUrl} alt={name} />
 				<h3>{props.service.name}</h3>
-				<p>
-					Lorem Ipsum is simply dummy<br /> and typesetting industry.
-				</p>
+				<p>{props.service.description}</p>
 			</div>
 		</div>
 	);

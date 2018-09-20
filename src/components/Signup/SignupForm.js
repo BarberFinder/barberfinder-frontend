@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import BirthdaySelect from '../Common/BirthdaySelect';
-import { withRouter } from 'react-router-dom';
 import { signup } from '../../actions/authActions';
-import { verifyToken } from '../../actions/authActions';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import Loading from '../Common/Loading';
 
 class SignupForm extends Component {
 	constructor(props) {
@@ -21,15 +20,16 @@ class SignupForm extends Component {
 				date: this.props.birthday.date,
 				month: this.props.birthday.month,
 				year: this.props.birthday.year
-			}
+			},
+			isLoading: this.props.isLoading,
+			isSuccess: this.props.isSuccess
 		};
 	}
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.token) {
-			localStorage.token = nextProps.token;
-			this.props.verifyToken(localStorage.token);
-		}
+	componentDidMount() {
+		this.setState({
+			isLoading: false
+		});
 	}
 
 	submitForm = (e) => {
@@ -41,7 +41,6 @@ class SignupForm extends Component {
 		if (parseInt(year, 10) > 0 && parseInt(month, 10) > 0 && parseInt(date, 10) > 0) {
 			userBirthday = new Date(`${year}-${month}-${date}`);
 		}
-
 		const user = {
 			first_name: this.state.first_name,
 			last_name: this.state.last_name,
@@ -52,6 +51,17 @@ class SignupForm extends Component {
 			phone: this.state.phone
 		};
 		this.props.signup(user);
+		this.setState({
+			isLoading: true
+		});
+	};
+
+	renderLoading = () => {
+		if (!this.props.isSuccess) {
+			return <Loading />;
+		} else {
+			return <Redirect to="/login" />;
+		}
 	};
 
 	handleBirthday = (e) => {
@@ -68,16 +78,11 @@ class SignupForm extends Component {
 		});
 	};
 
-	renderRedirect = () => {
-		if (this.props.isAuthenticated) {
-			return <Redirect to="/" />;
-		}
-	};
-
 	render() {
-		return (
+		return this.state.isLoading ? (
+			<React.Fragment>{this.renderLoading()}</React.Fragment>
+		) : (
 			<React.Fragment>
-				{this.renderRedirect()}
 				<form onSubmit={this.submitForm} className="form-horizontal">
 					<div className="form-group">
 						<div className="col-xs-6">
@@ -174,8 +179,15 @@ const mapStateToProps = (state) => {
 		password: state.auth.password,
 		phone: state.auth.phone,
 		birthday: state.auth.birthday,
-		token: state.auth.token
+		isSuccess: state.auth.isSuccess,
+		isLoading: state.auth.isLoading
 	};
 };
 
-export default withRouter(connect(mapStateToProps, { signup, verifyToken })(SignupForm));
+const mapDispatchToProps = (dispatch) => ({
+	signup: (data) => {
+		dispatch(signup(data));
+	}
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignupForm);

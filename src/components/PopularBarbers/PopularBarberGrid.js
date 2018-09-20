@@ -9,8 +9,7 @@ const PopularBarberGrid = () => {
 				<div className="section_heading align-center mb-40">
 					<h2>Our Popular Barber</h2>
 					<p>
-						Lorem Ipsum is simply dummy text of the printing and typesetting industry.<br />It has survived
-						not only five centuries.
+					Experienced barber and has good skills in this regard.
 					</p>
 				</div>
 				{PopularBarberConfig.popularBarbers.map((barber, index) => (
