@@ -16,7 +16,7 @@ days.map((day) => {
 });
 
 const initialState = {
-	services: [ { service_name: '', price: '' } ],
+	services: [{ service_name: '', price: '' }],
 	name: '',
 	tagline: '',
 	phone: '',
@@ -28,7 +28,8 @@ const initialState = {
 	image: defaultImage,
 	barbershopList: [],
 	isLoading: null,
-	isBarberLoaded: false
+	isBarberLoaded: false,
+	form_status: 'prepare'
 };
 
 const barber = (state = initialState, action) => {
@@ -60,6 +61,11 @@ const barber = (state = initialState, action) => {
 			return {
 				...state,
 				barbershop: action.payload.data
+			};
+		case type.SET_FORM_STATUS:
+			return {
+				...state,
+				form_status: action.payload
 			};
 		default:
 			return state;

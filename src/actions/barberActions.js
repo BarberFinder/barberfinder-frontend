@@ -18,15 +18,19 @@ export const getBarber = () => (dispatch) => {
 				payload: res.data
 			});
 		})
-		.catch((err) => {});
+		.catch((err) => { });
 };
 
-export const createBarber = (postData) => (dispatch) => {
+export const createBarber = (postData) => async (dispatch) => {
 	let token = '';
 	if (localStorage.token) {
 		token = localStorage.token;
 	}
-	axios
+	await dispatch({
+		type: type.SET_FORM_STATUS,
+		payload: "on_progress"
+	});
+	await axios
 		.post(`${process.env.REACT_APP_API_URL}/barber/create`, postData, {
 			headers: {
 				Authorization: `Bearer ${token}`,
@@ -38,16 +42,28 @@ export const createBarber = (postData) => (dispatch) => {
 				type: type.CREATE_BARBER,
 				payload: res.data
 			});
+			dispatch({
+				type: type.SET_FORM_STATUS,
+				payload: "done"
+			});
 		})
-		.catch((err) => {});
+		.catch((err) => { });
+	dispatch({
+		type: type.SET_FORM_STATUS,
+		payload: "prepare"
+	});
 };
 
-export const editBarber = (postData, barberId) => (dispatch) => {
+export const editBarber = (postData, barberId) => async (dispatch) => {
 	let token = '';
 	if (localStorage.token) {
 		token = localStorage.token;
 	}
-	axios
+	dispatch({
+		type: type.SET_FORM_STATUS,
+		payload: "on_progress"
+	});
+	await axios
 		.put(`${process.env.REACT_APP_API_URL}/barber/edit/${barberId}`, postData, {
 			headers: {
 				Authorization: `Bearer ${token}`,
@@ -59,8 +75,16 @@ export const editBarber = (postData, barberId) => (dispatch) => {
 				type: type.EDIT_BARBER,
 				payload: res.data
 			});
+			dispatch({
+				type: type.SET_FORM_STATUS,
+				payload: "done"
+			});
 		})
-		.catch((err) => {});
+		.catch((err) => { });
+	dispatch({
+		type: type.SET_FORM_STATUS,
+		payload: "prepare"
+	});
 };
 
 export const getBarberList = () => (dispatch) => {
@@ -80,7 +104,7 @@ export const getBarberList = () => (dispatch) => {
 				payload: res.data
 			});
 		})
-		.catch((err) => {});
+		.catch((err) => { });
 };
 
 export const getBarberById = (id) => (dispatch) => {
@@ -100,5 +124,5 @@ export const getBarberById = (id) => (dispatch) => {
 				payload: res.data
 			});
 		})
-		.catch((err) => {});
+		.catch((err) => { });
 };
