@@ -26,11 +26,11 @@ class BarberShopList extends Component {
 						</div>
 					</div>
 				</div>
-				{/* <ReservationModal
+				<ReservationModal
 					barber={this.props.barber}
 					onCloseModal={this.closeModal}
 					isOpen={this.state.isOpen}
-				/> */}
+				/>
 			</section>
 		);
 	}

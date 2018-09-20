@@ -3,14 +3,28 @@ import { Icon } from 'semantic-ui-react';
 import moment from 'moment';
 import defaultAvatar from '../../assets/man.svg';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { connect } from 'react-redux';
+import { getCurrentUser } from '../../actions/userActions';
+import Loading from '../Common/Loading';
 
 class UserDetail extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			user: this.props.user
+		};
 	}
+
+	componentDidMount() {
+		this.props.getUser();
+	}
+
 	render() {
-		console.log(this.props);
+		if (this.props.user === '') {
+			return <Loading />;
+		}
+
 		const { first_name, last_name, birthday, image, email, phone, username } = this.props.user;
 		let userBirthday = '';
 		if (birthday) {
@@ -26,7 +40,6 @@ class UserDetail extends Component {
 						</div>
 					</div>
 				</div>
-
 				<div className="col-sm-8 xs-padding">
 					<div className="blog_items">
 						<div className="col-sm-6">
@@ -70,4 +83,16 @@ class UserDetail extends Component {
 	}
 }
 
-export default UserDetail;
+const mapStateToProps = (state) => {
+	return {
+		user: state.user.user
+	};
+};
+
+const mapDispatchToProps = (dispatch) => ({
+	getUser: () => {
+		dispatch(getCurrentUser());
+	}
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserDetail);

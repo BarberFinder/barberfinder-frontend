@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { withRouter } from 'react-router-dom';
 import { login, verifyToken } from '../../actions/authActions';
 import Loading from '../Common/Loading';
 
@@ -12,8 +11,14 @@ class LoginForm extends Component {
 			email: this.props.email,
 			password: this.props.password,
 			isAuthenticated: this.props.isAuthenticated,
-			isLoading: false
+			isLoading: this.props.isLoading
 		};
+	}
+
+	componentDidMount() {
+		this.setState({
+			isLoading: false
+		});
 	}
 
 	handleInput = (e) => {
@@ -24,38 +29,25 @@ class LoginForm extends Component {
 
 	login = (e) => {
 		e.preventDefault();
-		this.setState({
-			isLoading: true,
-			email: '',
-			password: ''
-		});
 		this.props.login(this.state);
+		this.setState({
+			isLoading: true
+		});
 	};
 
-	componentWillReceiveProps(nextProps) {
-		if (nextProps.token) {
-			localStorage.token = nextProps.token;
-			this.props.verifyToken(localStorage.token);
-		}
-	}
-
-	renderRedirect = () => {
-		if (this.props.isAuthenticated) {
+	renderLoading = () => {
+		if (!this.props.isAuthenticated) {
+			return <Loading />;
+		} else {
 			return <Redirect to="/" />;
 		}
 	};
 
-	renderLoading = () => {
-		if (this.props.isLoading || this.state.isLoading) {
-			return <Loading />;
-		}
-	};
-
 	render() {
-		return (
+		return this.state.isLoading ? (
+			<React.Fragment>{this.renderLoading()}</React.Fragment>
+		) : (
 			<React.Fragment>
-				{this.renderRedirect()}
-				{this.renderLoading()}
 				<form onSubmit={this.login} className="form-horizontal">
 					<div className="form-group">
 						<div className="col-xs-12">
@@ -92,7 +84,6 @@ class LoginForm extends Component {
 						Login
 					</button>
 				</form>
-				{this.state.isLoading === true && <Loading />}
 			</React.Fragment>
 		);
 	}
@@ -109,4 +100,4 @@ const mapStateToProps = (state) => {
 	};
 };
 
-export default withRouter(connect(mapStateToProps, { login, verifyToken })(LoginForm));
+export default connect(mapStateToProps, { login, verifyToken })(LoginForm);

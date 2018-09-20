@@ -5,10 +5,21 @@ import { Link } from 'react-router-dom';
 class Login extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			isLoaded: false
+		};
 	}
+
+	componentDidMount() {
+		this.setState({
+			isLoaded: true
+		});
+	}
+
 	render() {
-		return (
+		return !this.state.isLoaded ? (
+			''
+		) : (
 			<div className="form-wrapper">
 				<section className="book_section padding">
 					<div className="container book_form">

@@ -8,14 +8,6 @@ class BarberShop extends Component {
 		super(props);
 	}
 
-	// renderRedirect = () => {
-	// 	if (!this.props.isAuthenticated) {
-	// 		return <Redirect to="/login" />;
-	// 	} else if (this.props.isAuthenticated && this.props.barbershop) {
-	// 		return <Redirect to="/barber" />;
-	// 	}
-	// };
-
 	render() {
 		return (
 			<div className="form-wrapper">
