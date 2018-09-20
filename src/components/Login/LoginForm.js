@@ -10,7 +10,8 @@ class LoginForm extends Component {
 		this.state = {
 			email: this.props.email,
 			password: this.props.password,
-			isAuthenticated: this.props.isAuthenticated
+			isAuthenticated: this.props.isAuthenticated,
+			isLoading: false
 		};
 	}
 
@@ -22,6 +23,11 @@ class LoginForm extends Component {
 
 	login = (e) => {
 		e.preventDefault();
+		this.setState({
+			isLoading : true,
+			email : "",
+			password: ""
+		})
 		this.props.login(this.state);
 	};
 
@@ -38,6 +44,10 @@ class LoginForm extends Component {
 		}
 	};
 
+	renderAnimation = () => {
+		return this.state.isLoading ? {display: "default"} : {display: "none"}
+	}
+
 	render() {
 		return (
 			<React.Fragment>
@@ -49,6 +59,7 @@ class LoginForm extends Component {
 								type="email"
 								name="email"
 								onChange={this.handleInput}
+								value={this.state.email}
 								className="form-control"
 								placeholder="Email / Username"
 								required
@@ -60,6 +71,7 @@ class LoginForm extends Component {
 							<input
 								type="password"
 								name="password"
+								value={this.state.password}
 								className="form-control"
 								placeholder="Password"
 								onChange={this.handleInput}
@@ -77,6 +89,7 @@ class LoginForm extends Component {
 					<button onClick={this.login} id="login-button-form" className="default_btn col-xs-6" type="submit">
 						Login
 					</button>
+					{(this.state.isLoading === true || this.props.error_message !== '') && <div class="lds-dual-ring"></div>}				
 				</form>
 			</React.Fragment>
 		);

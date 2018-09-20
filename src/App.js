@@ -25,6 +25,11 @@ class App extends Component {
 	};
 
 	render() {
+		if(this.props.isAuthenticated === null){
+			return(
+				<div></div>
+			)
+		}
 		return (
 			<Router>
 				<Switch>
