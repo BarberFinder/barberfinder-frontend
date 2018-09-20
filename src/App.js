@@ -8,14 +8,11 @@ import BarberPage from './pages/BarberPage';
 import UserPage from './pages/UserPage';
 import { verifyToken } from './actions/authActions';
 import { connect } from 'react-redux';
-import Loading from './components/Common/Loading';
+import BookingPage from './pages/BookingPage';
 
 class App extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			isAuthenticated: this.props.isAuthenticated
-		};
 	}
 
 	componentDidMount = async () => {
@@ -32,7 +29,8 @@ class App extends Component {
 					<Route path="/login" component={LoginPage} />
 					<Route path="/signup" component={SignupPage} />
 					<Route path="/barber" component={BarberPage} />
-					<Route path="/user" component={UserPage} />
+					<Route exact path="/user" component={UserPage} />
+					<Route exact path="/user/booking" component={BookingPage} />
 				</Switch>
 			</Router>
 		);

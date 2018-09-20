@@ -26,3 +26,23 @@ export const createReservation = (postData) => (dispatch) => {
 		})
 		.catch((err) => {});
 };
+
+export const getReservation = () => (dispatch) => {
+	let token = '';
+	if (localStorage.token) {
+		token = localStorage.token;
+	}
+	axios
+		.get(`${process.env.REACT_APP_API_URL}/reservation`, {
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		})
+		.then((res) => {
+			dispatch({
+				type: type.GET_RESERVATION,
+				payload: res.data
+			});
+		})
+		.catch((err) => {});
+};

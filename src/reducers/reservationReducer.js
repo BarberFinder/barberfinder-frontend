@@ -4,7 +4,8 @@ const initialState = {
 	reservationDate: '',
 	email: '',
 	phone: '',
-	isDoneReservation: ''
+	isDoneReservation: false,
+	booking: ''
 };
 
 const reservation = (state = initialState, action) => {
@@ -13,7 +14,12 @@ const reservation = (state = initialState, action) => {
 			const data = action.payload.data;
 			return {
 				...state,
-				isDoneReservation: data.status
+				isDoneReservation: data.isDone
+			};
+		case type.GET_RESERVATION:
+			return {
+				...state,
+				boooking: action.payload.data
 			};
 		default:
 			return state;

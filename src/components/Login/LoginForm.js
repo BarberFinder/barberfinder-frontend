@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 import { login, verifyToken } from '../../actions/authActions';
+import Loading from '../Common/Loading';
 
 class LoginForm extends Component {
 	constructor(props) {
@@ -10,7 +11,8 @@ class LoginForm extends Component {
 		this.state = {
 			email: this.props.email,
 			password: this.props.password,
-			isAuthenticated: this.props.isAuthenticated
+			isAuthenticated: this.props.isAuthenticated,
+			isLoading: this.props.isLoading
 		};
 	}
 
@@ -23,6 +25,9 @@ class LoginForm extends Component {
 	login = (e) => {
 		e.preventDefault();
 		this.props.login(this.state);
+		this.setState({
+			isLoading: false
+		});
 	};
 
 	componentWillReceiveProps(nextProps) {
@@ -38,10 +43,17 @@ class LoginForm extends Component {
 		}
 	};
 
+	renderLoading = () => {
+		if (this.props.isLoading || this.state.isLoading) {
+			return <Loading />;
+		}
+	};
+
 	render() {
 		return (
 			<React.Fragment>
 				{this.renderRedirect()}
+				{this.renderLoading()}
 				<form onSubmit={this.login} className="form-horizontal">
 					<div className="form-group">
 						<div className="col-xs-12">
@@ -89,7 +101,8 @@ const mapStateToProps = (state) => {
 		email: state.auth.email,
 		password: state.auth.password,
 		error_message: state.auth.error_message,
-		token: state.auth.token
+		token: state.auth.token,
+		isLoading: state.auth.isLoading
 	};
 };
 

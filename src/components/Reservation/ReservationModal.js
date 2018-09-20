@@ -41,18 +41,9 @@ class ReservationModalForm extends Component {
 	createReservation = (e) => {
 		e.preventDefault();
 		this.props.createReservation(this.state);
-		this.setState({
-			isDoneReservation: this.props.isDoneReservation
-		});
-		if (this.state.isDoneReservation === '') {
-			return <Loading />;
-		}
 	};
 
 	render() {
-		if (this.state.isDoneReservation === 'success') {
-			return <Redirect to="/barber/list" />;
-		}
 		const barber = this.props.barber;
 		let operation_hours = barberHelper.getOperationHours(barber.operation_hours);
 		return (
@@ -155,6 +146,7 @@ class ReservationModalForm extends Component {
 						</div>
 					</div>
 				</Modal>
+				{!this.state.isDoneReservation || !this.props.isDoneReservation ? <Loading /> : ''}
 			</Transition>
 		);
 	}

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getBarberList } from '../../actions/barberActions';
-import Loading from '../Common/Loading';
+import ReservationModal from '../Reservation/ReservationModal';
 import BarberShopProfileList from './BarberShopProfileList';
 
 class BarberShopList extends Component {
@@ -11,13 +11,10 @@ class BarberShopList extends Component {
 	}
 
 	componentDidMount() {
-		this.props.getBarbershopList();
+		this.props.getBarberList();
 	}
 
 	render() {
-		if (this.props.barbershopList.length === 0) {
-			return <Loading />;
-		}
 		return (
 			<section className="blog_section padding barbershop_list">
 				<div className="container">
@@ -29,6 +26,11 @@ class BarberShopList extends Component {
 						</div>
 					</div>
 				</div>
+				{/* <ReservationModal
+					barber={this.props.barber}
+					onCloseModal={this.closeModal}
+					isOpen={this.state.isOpen}
+				/> */}
 			</section>
 		);
 	}
@@ -36,12 +38,9 @@ class BarberShopList extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		barbershopList: state.barber.barbershopList
+		barbershopList: state.barber.barbershopList,
+		isAuthenticated: state.auth.isAuthenticated
 	};
 };
 
-const mapDispatchToProps = (dispatch) => ({
-	getBarbershopList: () => dispatch(getBarberList())
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(BarberShopList);
+export default connect(mapStateToProps, { getBarberList })(BarberShopList);

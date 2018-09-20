@@ -1,7 +1,7 @@
 import type from '../actions/types';
 
 const initialState = {
-	isAuthenticated: null,
+	isAuthenticated: false,
 	token: '',
 	first_name: '',
 	last_name: '',
@@ -15,7 +15,8 @@ const initialState = {
 		month: '',
 		year: ''
 	},
-	user: ''
+	user: '',
+	isLoading: true
 };
 
 const auth = (state = initialState, action) => {
@@ -41,7 +42,8 @@ const auth = (state = initialState, action) => {
 			return {
 				...state,
 				error_message: payload.message,
-				token: payload.token
+				token: payload.token,
+				isLoading: false
 			};
 		default:
 			return state;

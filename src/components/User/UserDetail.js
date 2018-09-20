@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Icon } from 'semantic-ui-react';
 import moment from 'moment';
 import defaultAvatar from '../../assets/man.svg';
+import { Link } from 'react-router-dom';
 
 class UserDetail extends Component {
 	constructor(props) {
@@ -44,7 +45,6 @@ class UserDetail extends Component {
 									<Icon className="phone" />
 									<span>{phone}</span>
 								</p>
-
 								{userBirthday ? (
 									<p>
 										<Icon className="calendar alternate outline" />
@@ -53,6 +53,13 @@ class UserDetail extends Component {
 								) : (
 									''
 								)}
+								<p>
+									<Link to="/user/booking">
+										<Icon className="book">
+											<span style={{ marginLeft: '5px' }}>See your booking list</span>
+										</Icon>
+									</Link>
+								</p>
 							</div>
 						</div>
 					</div>
