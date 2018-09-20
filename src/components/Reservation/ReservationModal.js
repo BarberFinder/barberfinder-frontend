@@ -85,8 +85,7 @@ class ReservationModalForm extends Component {
 							<div className="section_heading mb-40">
 								<h2>Appointment Now</h2>
 								<p>
-									Lorem Ipsum is simply dummy text of the printing and industry.<br />It has survived
-									not only five centuries.
+									Get your great Hairstyle.
 								</p>
 							</div>
 							<form className="form-horizontal">
