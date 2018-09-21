@@ -34,6 +34,7 @@ class BarberShopProfileList extends Component {
 	};
 
 	render() {
+		console.log(this.props.barber)
 		const { image, name, city } = this.props.barber;
 		return (
 			<React.Fragment>

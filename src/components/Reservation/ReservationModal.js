@@ -45,23 +45,23 @@ class ReservationModalForm extends Component {
 
 	render() {
 		const barber = this.props.barber;
-		let operation_hours = barberHelper.getOperationHours(barber.operation_hours);
+		// let operation_hours = barberHelper.getOperationHours(barber.operation_hours);
 		return (
 			<Transition duration="500" visible={this.props.isOpen} animation="scale" duration={500}>
 				<Modal centered={false} className="modal_appointment" dimmer={true} open={this.props.isOpen}>
 					<div className="wrapper">
 						<div className="col-sm-6 col-xs-12">
 							<div className="blog_post">
-								<Image wrapped size="medium" src={`${process.env.REACT_APP_API_URL}/${barber.image}`} />
+								{/* <Image wrapped size="medium" src={`${process.env.REACT_APP_API_URL}/${barber.image}`} /> */}
 								<div className="blog_content borderless pl-0">
-									<h4>{barber.name}</h4>
+									{/* <h4>{barber.name}</h4> */}
 									<br />
-									<p>{barber.phone}</p>
-									<p>{barber.address}</p>
+									{/* <p>{barber.phone}</p> */}
+									{/* <p>{barber.address}</p> */}
 								</div>
 								<div className="modal_appointment_operation_hours">
 									<h3>Operation Hours</h3>
-									{operation_hours.map((hour, index) => (
+									{/* {operation_hours.map((hour, index) => (
 										<div key={index}>
 											<div
 												style={{ float: 'left', minWidth: '100px' }}
@@ -77,7 +77,7 @@ class ReservationModalForm extends Component {
 												</p>
 											</div>
 										</div>
-									))}
+									))} */}
 								</div>
 							</div>
 						</div>

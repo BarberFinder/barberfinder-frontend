@@ -20,17 +20,17 @@ class BarberShopList extends Component {
 				<div className="container">
 					<div className="col-sm-8 xs-padding">
 						<div className="blog_items">
-							{this.props.barbershopList.map((barber, index) => (
+							{this.props.barbershopList && this.props.barbershopList.map((barber, index) => (
 								<BarberShopProfileList barber={barber} key={index} />
 							))}
 						</div>
 					</div>
 				</div>
-				<ReservationModal
+				{/* <ReservationModal
 					barber={this.props.barber}
 					onCloseModal={this.closeModal}
 					isOpen={this.state.isOpen}
-				/>
+				/> */}
 			</section>
 		);
 	}
